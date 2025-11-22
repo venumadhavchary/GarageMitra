@@ -47,4 +47,8 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
         ];
     }
+    public function mechanics()
+    {
+        return $this->hasMany(Mechanics::class, 'user_id');
+    }
 }

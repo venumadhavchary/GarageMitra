@@ -134,7 +134,7 @@ form .name-details .field:last-child{
 .form form .image input{
     font-size: 17px;
 }
-form button {
+button {
     margin-top: 10px;
     height: 45px;
     border: none;
@@ -380,3 +380,24 @@ form button {
     cursor: pointer;
     font-size: 19px;
 }
+
+/* Modal CSS */
+
+
+.modal { 
+	display: block;
+}
+
+/* Custom dialog/modal headers */
+
+.dialog-header-error { background-color: #d2322d; }
+.dialog-header-wait { background-color: #428bca; }
+.dialog-header-notify { background-color: #eeeeee; }
+.dialog-header-confirm { background-color: #333333; }
+	.dialog-header-error span, .dialog-header-error h4,
+	.dialog-header-wait span, .dialog-header-wait h4,
+	.dialog-header-confirm span, .dialog-header-confirm h4 { color: #ffffff; }
+
+/* Ease Display */
+
+.pad { padding: 25px; }

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\JobcardsController as Jobcards;
+use App\Http\Controllers\MechanicsController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -24,4 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::get('dashboard', function ()  {
         return view('dashboard');
     })->name('dashboard');    
+    Route::resource('mechanics', MechanicsController::class);
+    Route::get('jobcards', [Jobcards::class, 'index'] )->name('jobcards.index');
 });
+
