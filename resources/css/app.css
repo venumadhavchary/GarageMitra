@@ -67,18 +67,18 @@ body{
 .form form{
     margin: 20px 0;
 }
-.image-preview-container {
+.image-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
 }
 
-.circular-image {
+img {
     width: 150px; /* Set your desired size */
     height: 150px; /* Must match width */
-    border-radius: 50%; /* Makes it a circle */
-    object-fit: cover; /* CRITICAL: Crops the image to fit the circle */
+    /* border-radius: 50%; Makes it a circle */
+    object-fit: cover; 
     border: 3px solid #e0e0e0; /* Optional: Nice border */
     background-color: #f0f0f0; /* Placeholder background */
 }
@@ -181,10 +181,7 @@ button {
     justify-content: space-between;
     border-bottom: 1px solid #e6e6e6;
 }
-.wrapper img{
-    object-fit: cover;
-    border-radius: 50%;
-}
+ 
 :is(.users, .users-list) .content {
     display: flex;
     align-items: center;

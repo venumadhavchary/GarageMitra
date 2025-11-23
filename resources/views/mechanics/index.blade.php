@@ -31,5 +31,5 @@
             updateMechanic: "{{ route('mechanics.update', ['mechanic' => 'MECHANIC_ID']) }}",
         };
     </script>
-    @vite('resources/js/mechanics.js')
+    @vite(['resources/js/api.js', 'resources/js/mechanics.js'])
 @endsection
