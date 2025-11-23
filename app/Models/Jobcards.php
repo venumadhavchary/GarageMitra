@@ -29,5 +29,9 @@ class Jobcards extends Model
     {
         return $this->belongsTo(Mechanics::class, 'mechanic_id');
     }
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicles::class, 'vehicle_number', 'vehicle_number');
+    }
 }
 
