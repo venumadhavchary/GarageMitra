@@ -20,10 +20,8 @@ return new class extends Migration
             $table->string('vehicle_number');
             $table->foreign('vehicle_number')->references('vehicle_number')->on('vehicles')->onDelete('cascade');
             $table->json('services'); 
-            $table->string('customer_name');
             $table->string('vehicle_type');
             $table->text('remarks')->nullable();
-            $table->integer('total_cost')->default(0);
             $table->integer('paid_amount')->default(0);
             $table->bigInteger('odometer_reading')->default(0);
             $table->integer('fuel_level')->default(0);
