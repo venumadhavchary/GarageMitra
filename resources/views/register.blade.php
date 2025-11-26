@@ -1,4 +1,4 @@
-@extends('layouts.index')
+@extends('layouts.auth.index')
 
 @section('content')
     <div class="wrapper">

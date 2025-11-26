@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
-abstract class Controller
+class Controller
 {
     //
+    public function __construct()
+    {
+        view()->share('title', 'GarageMitra');
+    } 
 }

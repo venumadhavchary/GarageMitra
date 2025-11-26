@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\JobcardsController as Jobcards;
+use App\Http\Controllers\JobcardsController;
 use App\Http\Controllers\MechanicsController;
 use App\Http\Controllers\VehiclesController;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('guest')->group(function () {
-    
     Route::get('/', [AuthController::class, 'index'])->name('login');
     Route::post('send_otp', [AuthController::class, 'sendOtp'])->name('auth.send_otp');
     Route::post('resend_otp', [AuthController::class, 'resendOtp'])->name('auth.resend_otp');
@@ -20,15 +19,22 @@ Route::middleware('guest')->group(function () {
     Route::get('change_number', [AuthController::class, 'changeNumber'])->name('change_number');
     Route::get('register', [AuthController::class, 'register'])->name('register');
     Route::post('register', [AuthController::class, 'store'])->name('auth.store');
-
 });
- 
+
 Route::middleware('auth')->group(function () {
-    Route::get('dashboard', function ()  {
-        return view('dashboard');
-    })->name('dashboard');    
+    Route::get('/', [JobcardsController::class, 'index'])->name('jobcards.index');
+    Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::get('jobcards', [JobcardsController::class, 'index'])->name('jobcards.index');
+    Route::get('jobcards/{vehicle_id}/create', [JobcardsController::class, 'create'])->name('jobcards.create');
+    Route::post('jobcards/{vehicle_id}', [JobcardsController::class, 'store'])->name('jobcards.store');
+    Route::get('vehicles/{id}', [VehiclesController::class, 'showJobs'])->name('vehicles.show');
+    
+    Route::get('docs', function () {
+        return view('docs');
+    })->name('docs');
+    // Main Resources
+    // Route::resource('jobcards', JobcardsController::class);
     Route::resource('mechanics', MechanicsController::class);
-    Route::get('jobcards', [Jobcards::class, 'index'] )->name('jobcards.index');
     Route::resource('vehicles', VehiclesController::class);
-});
 
+});

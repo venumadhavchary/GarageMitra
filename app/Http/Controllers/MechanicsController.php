@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mechanics;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MechanicsController extends Controller
 {
@@ -12,7 +13,7 @@ class MechanicsController extends Controller
      */
     public function index()
     {
-        $mechanics = Mechanics::all();
+        $mechanics = Auth::user()->mechanics()->paginate(15);
         return view('mechanics.index', compact('mechanics'));
     }
 
@@ -27,18 +28,18 @@ class MechanicsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'specialization' => 'nullable|string|max:255',
-    //         'phone' => 'nullable|unique:mechanics|regex:/^[0-9]{10}$/',
-    //     ]);
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'specialization' => 'nullable|string|max:255',
+            'phone' => 'nullable|unique:mechanics|regex:/^[0-9]{10}$/',
+        ]);
 
-    //     $request->user()->mechanics()->create($validated);
+        $request->user()->mechanics()->create($validated);
 
-    //     return response()->json(['message' => 'Mechanic added successfully'], 201);
-    // }
+        return response()->json(['message' => 'Mechanic added successfully'], 201);
+    }
 
     /**
      * Display the specified resource.

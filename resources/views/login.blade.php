@@ -1,4 +1,4 @@
-@extends('layouts.index')
+@extends('layouts.auth.index')
 
 @section('content')
     <div class="wrapper">
@@ -19,7 +19,7 @@
                 <div  class="field input" id="otp_field" style="display:none;">
                     <label for="otp">Otp:</label>
                     <a href="#" id="resend_otp">Resend Otp</a> 
-                    <input type="text" id="otp" name="otp" maxlength="10" inputmode="numeric" placeholder="Enter OTP" required>
+                    <input type="text" id="otp" name="otp" maxlength="10" inputmode="numeric" placeholder="Enter OTP" >
                 </div>
                 <div class="field button">
                     <button id="login_button" style="display: none" type="submit">Login</button>

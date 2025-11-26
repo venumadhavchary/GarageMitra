@@ -47,3 +47,24 @@ export async function handleRequest(event, form, url, isUpdate = false) {
         successMessage.style.display = "none";
     }
 }
+function displayErrors(form, errors) {
+    // Clear previous errors
+    clearErrors(form);
+    
+    // Display new errors
+    Object.keys(errors).forEach(fieldName => {
+        const errorElement = form.querySelector(`#${fieldName}_error`);
+        if (errorElement) {
+            errorElement.textContent = errors[fieldName][0];
+            errorElement.style.display = 'block';
+        }
+    });
+}
+
+function clearErrors(form) {
+    const errorElements = form.querySelectorAll('[id$="_error"]');
+    errorElements.forEach(el => {
+        el.textContent = '';
+        el.style.display = 'none';
+    });
+}
