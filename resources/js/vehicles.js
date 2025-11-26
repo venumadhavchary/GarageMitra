@@ -27,15 +27,25 @@ editVehicleButton.addEventListener("click", function(e) {
     
     console.log(vehicle);
     editVehicleForm.dataset.vehicleId = vehicle.id;
-    editVehicleForm.querySelector("#vehicle_number").value = vehicle.vehicle_number;
-    editVehicleForm.querySelector("#make").value = vehicle.make;
-    editVehicleForm.querySelector("#model").value = vehicle.model;
-    editVehicleForm.querySelector("#fuel_type").value = vehicle.fuel_type;
-    editVehicleForm.querySelector("#owner_name").value = vehicle.owner_name;
-    editVehicleForm.querySelector("#owner_contact").value = vehicle.owner_contact;
-    editVehicleForm.querySelector("#secondary_number").value = vehicle.secondary_number;
-    editVehicleForm.querySelector("#email").value = vehicle.email;
-    editVehicleForm.querySelector("#address").value = vehicle.address;
+    const $columns = [
+        "vehicle_number",
+        "make",
+        "model",
+        "fuel_type",
+        "owner_name",
+        "owner_contact",
+        "secondary_number",
+        "email",
+        "address"
+    ];
+    
+    $columns.forEach(column => {
+
+        const inputField = editVehicleForm.querySelector("#" + column);
+        if (inputField) {
+            inputField.value = vehicle[column] ?? '';
+        }
+    });
     const currentImage = editVehicleForm.querySelector("#current_vehicle_image");
     const imageUrl = e.target.dataset.vehicle_image;
     if (imageUrl && imageUrl !== 'undefined') {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Vehicles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VehiclesController extends Controller
 {
@@ -11,9 +12,8 @@ class VehiclesController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
-        $vehicles = Vehicles::all();
+    { 
+        $vehicles = Auth::user()->vehicles()->paginate(15);
         return view('vehicles.index', compact('vehicles'));
     }
 
@@ -32,6 +32,7 @@ class VehiclesController extends Controller
             'make' => 'required|string|max:255',
             'model' => 'required|string|max:255',
             'fuel_type' => 'required|string|max:50',
+            'vehicle_type' => 'required|string|max:255',
             'owner_name' => 'required|string|max:255',
             'owner_contact' => 'required|regex:/^[0-9]{10}$/',
             'secondary_contact' => 'nullable|regex:/^[0-9]{10}$/',
@@ -52,9 +53,18 @@ class VehiclesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Vehicles $vehicles)
+    public function show($id)
     {
-        //
+        $vehicle = Vehicles::findOrFail($id);
+        return view('vehicles.show', compact('vehicle'));
+    }
+
+     public function showJobs($id)
+    {
+        $vehicle = Vehicles::findOrFail($id);
+        $jobcards = $vehicle->jobcards()->get();
+        // dd($jobcards);
+        return view('vehicles.show', compact('jobcards', 'vehicle'));
     }
 
     /**
@@ -75,6 +85,7 @@ class VehiclesController extends Controller
             'make' => 'required|string|max:255',
             'model' => 'required|string|max:255',
             'fuel_type' => 'required|string|max:50',
+            'vehicle_type' => 'required|string|max:255',
             'owner_name' => 'required|string|max:255',
             'owner_contact' => 'required|regex:/^[0-9]{10}$/',
             'secondary_contact' => 'nullable|regex:/^[0-9]{10}$/',

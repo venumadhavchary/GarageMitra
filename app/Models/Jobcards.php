@@ -11,13 +11,21 @@ use App\Models\Mechanics;
 class Jobcards extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'jobcard_number',
-        'vehicle_number',
-        'customer_name',
-        'service_type',
+    protected $fillable = [ 
         'user_id',
         'mechanic_id',
+        'vehicle_number',
+        'services',
+        'vehicle_type',
+        'remarks',
+        'paid_amount',
+        'odometer_reading',
+        'fuel_level',
+        'vehicle_received_from',
+        'vehicle_returned_to',
+        'estimated_completion_date',
+        'vehicle_condition',
+        'vehicle_images',
         'status',
     ];
 
@@ -28,6 +36,10 @@ class Jobcards extends Model
     public function mechanic()
     {
         return $this->belongsTo(Mechanics::class, 'mechanic_id');
+    }
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicles::class, 'vehicle_number', 'vehicle_number');
     }
 }
 

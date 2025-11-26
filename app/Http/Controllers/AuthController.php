@@ -14,6 +14,9 @@ class AuthController extends Controller
      */
     public function index()
     {
+        // if(Auth::check()){
+        //     return route('jobcards.index');
+        // }
         if(session('verified_phone')){
             return view('register', ['mobile_number' => session('verified_phone')]);
         }
@@ -109,7 +112,7 @@ class AuthController extends Controller
             Auth::login($user->first());
             return response()->json([
                 'status' => 'success',
-                'redirect_url' => route('dashboard'),
+                'redirect_url' => route('jobcards.index'),
                 'message' => 'Login successful',
             ], 200);
         }
