@@ -13,7 +13,7 @@ class Jobcards extends Model
     use HasFactory;
     protected $fillable = [ 
         'user_id',
-        'mechanic_id',
+        'mechanic_name',
         'vehicle_number',
         'services',
         'vehicle_type',
@@ -32,10 +32,6 @@ class Jobcards extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-    public function mechanic()
-    {
-        return $this->belongsTo(Mechanics::class, 'mechanic_id');
     }
     public function vehicle()
     {

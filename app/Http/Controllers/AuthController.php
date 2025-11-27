@@ -14,9 +14,9 @@ class AuthController extends Controller
      */
     public function index()
     {
-        // if(Auth::check()){
-        //     return route('jobcards.index');
-        // }
+        if(Auth::check()){
+            return view('jobcards.index');
+        }
         if(session('verified_phone')){
             return view('register', ['mobile_number' => session('verified_phone')]);
         }
@@ -135,6 +135,13 @@ class AuthController extends Controller
         }
         
         return view('register' , ['mobile_number' => $mobile_number]);
+    }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login');
     }
     /**
      * Show the form for creating a new resource.

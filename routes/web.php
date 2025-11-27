@@ -6,10 +6,6 @@ use App\Http\Controllers\MechanicsController;
 use App\Http\Controllers\VehiclesController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'index'])->name('login');
@@ -22,9 +18,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', [JobcardsController::class, 'index'])->name('jobcards.index');
-    Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
-    Route::get('jobcards', [JobcardsController::class, 'index'])->name('jobcards.index');
+    Route::get('/jobcards', [JobcardsController::class, 'index'])->name('jobcards.index');
+    Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('jobcards/{vehicle_id}/create', [JobcardsController::class, 'create'])->name('jobcards.create');
     Route::post('jobcards/{vehicle_id}', [JobcardsController::class, 'store'])->name('jobcards.store');
     Route::get('vehicles/{id}', [VehiclesController::class, 'showJobs'])->name('vehicles.show');
@@ -38,3 +33,4 @@ Route::middleware('auth')->group(function () {
     Route::resource('vehicles', VehiclesController::class);
 
 });
+

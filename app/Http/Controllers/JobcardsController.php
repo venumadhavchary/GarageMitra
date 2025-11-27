@@ -30,7 +30,8 @@ class JobcardsController extends Controller
         $vehicle = Vehicles::findOrFail($vehicle_id);
         $mechanics = Mechanics::all();
         $services = Service::all();
-        return view('jobcards.create', compact('vehicle', 'mechanics', 'services'));
+        $user = Auth::user();
+        return view('jobcards.create', compact('vehicle', 'mechanics', 'services','user'));
     }
 
     /**
@@ -48,7 +49,7 @@ class JobcardsController extends Controller
             'remarks' => 'nullable|string',
 
             'paid_amount' => 'nullable|integer|min:0',
-            'odometer_reading' => 'nullable|integer|min:0',
+            'odometer_reading' => 'required|integer|min:0',
             'fuel_level' => 'nullable|integer|min:0|max:100',
 
             'vehicle_received_from' => 'required|in:owner,other',
@@ -57,7 +58,7 @@ class JobcardsController extends Controller
             'vehicle_collected_by' => 'required|in:owner,other',
             'vehicle_collected_by_other' => 'required_if:vehicle_collected_by,other|max:255',
 
-            'mechanic_id' => 'nullable|exists:mechanics,id',
+            'mechanic_name' => 'nullable|string|max:255',
             'status' => 'nullable|string|max:50',
 
             'estimated_completion_date' => 'nullable|date',
@@ -70,6 +71,9 @@ class JobcardsController extends Controller
         ]);
 
         $validated['services'] = $this->formatServices($validated['services']);
+        if(empty($validated['mechanic_name'])){
+            $validated['mechanic_name'] = Auth::user()->name;
+        }
 
         $images = [];
         if ($request->hasFile('vehicle_images')) {

@@ -45,6 +45,7 @@
     <div class="navbar-actions">
         <button class="btn btn-ghost btn-icon">🔔</button>
         <button class="btn btn-primary">Dashboard</button>
+        <a href="{{ route('auth.logout') }}" class="btn btn-ghost">Logout</a>
     </div>
 </nav>
 

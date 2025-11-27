@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('jobcards', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); 
-            $table->unsignedBigInteger('mechanic_id');
-            $table->foreign('mechanic_id')->references('id')->on('mechanics')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');  
+            $table->string('mechanic_name');
             $table->string('vehicle_number');
             $table->foreign('vehicle_number')->references('vehicle_number')->on('vehicles')->onDelete('cascade');
             $table->json('services'); 

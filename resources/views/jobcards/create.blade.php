@@ -31,7 +31,7 @@
                     </div>
                     <!-- Services -->
                     <div class="form-group">
-                        <label class="form-label">Services</label>
+                        <label class="form-label required">Services</label>
 
                         @foreach ($services as $service)
                             <div class="form-check">
@@ -81,7 +81,7 @@
 
                         <!-- Odometer -->
                         <div class="form-group mb-0" style="flex: 1; min-width: 200px;">
-                            <label class="form-label">Odometer</label>
+                            <label class="form-label required">Odometer</label>
                             <input type="tel" class="form-control @error('odometer_reading') is-invalid @enderror"
                                 name="odometer_reading" value="{{ old('odometer_reading') }}"
                                 placeholder="Odometer reading">
@@ -152,11 +152,11 @@
                     <div class="d-flex flex-wrap gap-4 mb-4">
                         <div class="form-group mb-0" style="flex: 1; min-width: 200px;">
                             <label class="form-label">Assign Mechanic</label>
-                            <select class="form-control" name="mechanic_id">
+                            <select class="form-control" name="mechanic_name">
                                 <option value="">Select mechanic...</option>
                                 @foreach ($mechanics ?? [] as $mechanic)
-                                    <option value="{{ $mechanic->id }}">{{ $mechanic->name }} -
-                                        {{ $mechanic->specialization }}</option>
+                                    <option value="{{ $mechanic->name }}">{{ $mechanic->name }} -
+                                        {{ $mechanic->mechanic_name }}</option>
                                 @endforeach
                             </select>
                         </div>
