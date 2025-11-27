@@ -25,46 +25,112 @@ export async function handleRequest(event, form, url, isUpdate = false) {
             body: formData,
         });
         const data = await response.json();
-        console.log("Response data:", data);
+         
         if (!response.ok) {
-            throw new Error(data.message || "An error occurred.");
+            if (response.status === 422 && data.errors) {
+                // Laravel validation errors
+                displayValidationErrors(form, data.errors, errorMessage);
+                throw new Error("Validation failed");
+            }
+            throw new Error(data.message || "An error occurred while processing the request.");
         }
+        
         if (data && data.status === "error" && data.message) {
             throw new Error(data.message);
         }
+        // Clear all field errors on success
+        clearFieldErrors(form);
         errorMessage.style.display = "none";
         successMessage.style.display = "block";
         successMessage.textContent = data.message || "Success.";
+        if(data.url){
+            window.location.href = data.url;
+            return;
+        }
         setTimeout(() => {
             window.location.reload();
-        }, 1000);
+        }, 500);
     } catch (error) {
-        console.error(error.message);
-
-        errorMessage.textContent =
-            error.message || "An error occurred. Please try again.";
-        errorMessage.style.display = "block";
+        
+        console.error("Error during request:", error);
+        for(const err of Object.values(error || {})) {
+            if(Array.isArray(err)) {
+                errorMessage.innerHTML += err.join("<br>") + "<br>";
+            } else {
+                errorMessage.innerHTML += err + "<br>";
+            }
+        }
         successMessage.style.display = "none";
     }
 }
-function displayErrors(form, errors) {
+function displayValidationErrors(form, errors, generalErrorElement) {
     // Clear previous errors
-    clearErrors(form);
+    clearFieldErrors(form);
     
-    // Display new errors
-    Object.keys(errors).forEach(fieldName => {
+    let hasGeneralError = false;
+    
+    // Display errors per field
+    for (const [fieldName, fieldErrors] of Object.entries(errors)) {
+        const field = form.querySelector(`[name="${fieldName}"]`);
         const errorElement = form.querySelector(`#${fieldName}_error`);
-        if (errorElement) {
-            errorElement.textContent = errors[fieldName][0];
-            errorElement.style.display = 'block';
+        
+        if (field && errorElement) {
+            // Display field-specific error
+            const errorText = Array.isArray(fieldErrors) ? fieldErrors[0] : fieldErrors;
+            errorElement.textContent = errorText;
+            errorElement.style.display = "block";
+            
+            // // Add error class to field
+            // field.classList.add("error");
+        } else {
+            // If no field element found, add to general errors
+            hasGeneralError = true;
         }
-    });
+    }
+    
+    // Display general errors
+    if (hasGeneralError || Object.keys(errors).length === 0) {
+        const errorTexts = [];
+        for (const [, fieldErrors] of Object.entries(errors)) {
+            if (Array.isArray(fieldErrors)) {
+                errorTexts.push(...fieldErrors);
+            } else {
+                errorTexts.push(fieldErrors);
+            }
+        }
+        
+        if (errorTexts.length > 0) {
+            generalErrorElement.innerHTML = errorTexts.join("<br>");
+            generalErrorElement.style.display = "block";
+        }
+    }
+    
+    // Focus on first error field
+    const firstErrorField = form.querySelector(".error");
+    if (firstErrorField) {
+        firstErrorField.focus();
+    }
 }
 
-function clearErrors(form) {
-    const errorElements = form.querySelectorAll('[id$="_error"]');
-    errorElements.forEach(el => {
-        el.textContent = '';
-        el.style.display = 'none';
+function clearFieldErrors(form) {
+    // Remove error class from all fields
+    form.querySelectorAll(".error").forEach(field => {
+        field.classList.remove("error");
     });
-}
+    
+    // Hide all field error messages
+    form.querySelectorAll("[id$='_error']").forEach(errorEl => {
+        errorEl.style.display = "none";
+        errorEl.textContent = "";
+    });
+} 
+
+window.openModal = function (modalId) {
+    document.getElementById(modalId).classList.remove("hide");
+    document.getElementById(modalId).classList.add("show");
+};
+
+window.closeModal = function (modalId) {
+    document.getElementById(modalId).classList.remove("show");
+    document.getElementById(modalId).classList.add("hide");
+};

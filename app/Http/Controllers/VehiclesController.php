@@ -46,8 +46,8 @@ class VehiclesController extends Controller
             $image->storeAs('vehicles', $imageName, 'public'); // Saves to storage/app/public/vehicles
             $validated['vehicle_image'] = $imageName;
         }
-        $request->user()->vehicles()->create($validated);
-        return response()->json(['message' => 'Vehicle added successfully'], 201);
+        $vehicle = $request->user()->vehicles()->create($validated);
+        return response()->json(['message' => 'Vehicle added successfully', 'url' => route('vehicles.show', $vehicle->id) ], 201);
     }
 
     /**

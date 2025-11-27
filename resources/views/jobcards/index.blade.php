@@ -9,9 +9,9 @@
             <h1 class="mb-1">Job Cards</h1>
             <p class="text-muted mb-0">Manage all vehicle service jobs</p>
         </div>
-        <button class="btn btn-primary" data-toggle="modal" data-target="#addVehicleModal">
-            ➕ Add Vehicle
-        </button>
+        <button class="btn btn-primary" onclick="openModal('add_vehicle')">
+                ➕ Add Vehicle
+            </button>
     </div>
 
     <!-- Status Filter Tabs -->
@@ -151,10 +151,17 @@
 </div>
 
  
-
+@include('vehicles.create')
  
+<script>
+        // Create a global variable that your external JS can read
+        const appRoutes = {
+            addVehicle: "{{ route('vehicles.store') }}",
+            updateVehicle: "{{ route('vehicles.update', ['vehicle' => 'VEHICLE_ID']) }}",
+        };
+    </script>
 
-@vite(['resources/js/api.js', 'resources/js/jobcards.js'])
+@vite(['resources/js/api.js', 'resources/js/jobcards.js' , 'resources/js/vehicles.js'])
 
 <script>
 // Status Filter

@@ -156,7 +156,7 @@
                                 <option value="">Select mechanic...</option>
                                 @foreach ($mechanics ?? [] as $mechanic)
                                     <option value="{{ $mechanic->name }}">{{ $mechanic->name }} -
-                                        {{ $mechanic->mechanic_name }}</option>
+                                        {{ $mechanic->specialization }}</option>
                                 @endforeach
                             </select>
                         </div>

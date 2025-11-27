@@ -9,7 +9,7 @@
                 <h1 class="mb-1">Vehicles</h1>
                 <p class="text-muted mb-0">Manage all vehicles</p>
             </div>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#add_vehicle">
+            <button class="btn btn-primary" onclick="openModal('add_vehicle')">
                 ➕ Add Vehicle
             </button>
         </div>
@@ -50,9 +50,7 @@
                                 <td>{{ $vehicle->owner_name }}</td>
                                 <td style="text-align: right; padding-right: 1.5rem;">
                                     <div class="d-flex gap-2 justify-content-end">
-                                        <button type="button" class="btn btn-ghost btn-sm" 
-                                                data-toggle="modal" 
-                                                data-target="#edit_vehicle"
+                                        <button type="button" class="btn btn-ghost btn-sm edit-vehicle-btn" 
                                                 data-vehicle="{{ json_encode($vehicle) }}"
                                                 data-vehicle_image="{{ asset('storage/vehicles/' . $vehicle->vehicle_image) }}">
                                             ✏️ Edit

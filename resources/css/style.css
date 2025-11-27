@@ -1049,6 +1049,8 @@ select.form-control {
     opacity: 0;
     visibility: hidden;
     transition: all var(--transition-normal);
+    padding: 1rem;
+    overflow-y: auto;
 }
 
 .modal-backdrop.show {
@@ -1061,11 +1063,14 @@ select.form-control {
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-xl);
     max-width: 500px;
-    width: 90%;
-    max-height: 90vh;
+    width: 100%;
+    max-height: calc(100vh - 2rem);
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     transform: scale(0.9) translateY(20px);
     transition: all var(--transition-normal);
+    margin: auto;
 }
 
 .modal-backdrop.show .modal {
@@ -1078,6 +1083,7 @@ select.form-control {
     justify-content: space-between;
     padding: var(--spacing-4) var(--spacing-6);
     border-bottom: 1px solid var(--gray-200);
+    flex-shrink: 0;
 }
 
 .modal-title {
@@ -1101,6 +1107,8 @@ select.form-control {
 .modal-body {
     padding: var(--spacing-6);
     overflow-y: auto;
+    flex: 1;
+    min-height: 0;
 }
 
 .modal-footer {
@@ -1109,6 +1117,7 @@ select.form-control {
     gap: var(--spacing-3);
     padding: var(--spacing-4) var(--spacing-6);
     border-top: 1px solid var(--gray-200);
+    flex-shrink: 0;
 }
 
 /* -------------------- Utilities -------------------- */

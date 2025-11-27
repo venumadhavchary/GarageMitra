@@ -12,6 +12,108 @@
     <style>
         html { scroll-padding-top: 80px; }
         
+        /* Side Menu Styles */
+        .docs-layout {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .docs-sidebar {
+            position: sticky;
+            top: 80px;
+            width: 240px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+            flex-shrink: 0;
+            padding: 1rem 0;
+        }
+
+        .docs-sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .docs-sidebar::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+        }
+
+        .sidebar-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray-500);
+            padding: 0.75rem 1rem;
+            margin: 0;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            font-size: 0.875rem;
+            border-left: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .sidebar-nav a:hover {
+            color: var(--primary);
+            background: var(--gray-50);
+        }
+
+        .sidebar-nav a.active {
+            color: var(--primary);
+            border-left-color: var(--primary);
+            background: var(--primary-light);
+            font-weight: 500;
+        }
+
+        .docs-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Code Block with Copy Button */
+        .docs-code {
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.75rem;
+            background: var(--gray-700);
+            color: var(--gray-300);
+            border: 1px solid var(--gray-600);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            z-index: 10;
+        }
+
+        .copy-btn:hover {
+            background: var(--gray-600);
+            color: white;
+        }
+
+        .copy-btn.copied {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
         /* Multiple Image Upload Styles - Square + Button */
         .image-upload-wrapper {
             display: flex;
@@ -147,6 +249,13 @@
         .form-text.text-danger {
             font-weight: 500;
         }
+
+        /* Responsive sidebar */
+        @media (max-width: 992px) {
+            .docs-sidebar {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -190,6 +299,7 @@
     </ul>
     
     <div class="navbar-actions">
+        <button class="btn btn-success" onclick="openFormModal()">➕ New Job Card</button>
         <button class="btn btn-ghost btn-icon">🔔</button>
         <button class="btn btn-primary">Dashboard</button>
     </div>
@@ -203,6 +313,39 @@
         <p class="text-muted">A complete style guide with all components and code examples</p>
     </div>
 
+    <div class="docs-layout">
+        <!-- Side Menu -->
+        <aside class="docs-sidebar">
+            <p class="sidebar-title">Getting Started</p>
+            <ul class="sidebar-nav">
+                <li><a href="#colors" class="active">🎨 Colors</a></li>
+                <li><a href="#typography">📝 Typography</a></li>
+            </ul>
+            
+            <p class="sidebar-title">Components</p>
+            <ul class="sidebar-nav">
+                <li><a href="#buttons">🔘 Buttons</a></li>
+                <li><a href="#forms">📋 Forms</a></li>
+                <li><a href="#cards">🃏 Cards</a></li>
+                <li><a href="#alerts">⚠️ Alerts</a></li>
+                <li><a href="#badges">🏷️ Badges</a></li>
+                <li><a href="#tables">📊 Tables</a></li>
+                <li><a href="#modals">🪟 Modals</a></li>
+            </ul>
+            
+            <p class="sidebar-title">Navigation</p>
+            <ul class="sidebar-nav">
+                <li><a href="#navbar-docs">🧭 Navbar</a></li>
+            </ul>
+            
+            <p class="sidebar-title">Helpers</p>
+            <ul class="sidebar-nav">
+                <li><a href="#utilities">🛠️ Utilities</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="docs-content">
     <!-- ==================== COLORS ==================== -->
     <section id="colors" class="docs-section">
         <h2 class="docs-section-title">🎨 Colors</h2>
@@ -1241,7 +1384,10 @@ function removeImage(index) {
         <h2 class="docs-section-title">🪟 Modals</h2>
         
         <div class="docs-preview">
-            <button class="btn btn-primary" onclick="openModal()">Open Modal</button>
+            <div class="d-flex gap-3">
+                <button class="btn btn-primary" onclick="openModal()">Open Simple Modal</button>
+                <button class="btn btn-success" onclick="openFormModal()">Open Form Modal</button>
+            </div>
         </div>
         
         <div class="modal-backdrop" id="demoModal" onclick="closeModal(event)">
@@ -1361,6 +1507,7 @@ function toggleNav() {
         
         <h4>Spacing</h4>
         <div class="docs-code">
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
             <pre><code>&lt;!-- Margin --&gt;
 .m-0, .m-1, .m-2, .m-3, .m-4          /* All sides */
 .mt-0 to .mt-8                         /* Margin top */
@@ -1372,6 +1519,7 @@ function toggleNav() {
 
         <h4>Display & Flexbox</h4>
         <div class="docs-code">
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
             <pre><code>.d-flex, .d-block, .d-none, .d-inline-flex
 .flex-wrap, .flex-column
 .align-items-center
@@ -1381,6 +1529,7 @@ function toggleNav() {
 
         <h4>Text & Colors</h4>
         <div class="docs-code">
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
             <pre><code>.text-center, .text-left, .text-right
 .text-primary, .text-success, .text-danger, .text-warning, .text-muted
 .bg-primary, .bg-success, .bg-danger, .bg-light, .bg-white</code></pre>
@@ -1388,16 +1537,21 @@ function toggleNav() {
 
         <h4>Borders & Shadows</h4>
         <div class="docs-code">
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
             <pre><code>.rounded, .rounded-lg, .rounded-full
 .shadow-sm, .shadow-md, .shadow-lg</code></pre>
         </div>
 
         <h4>Sizing</h4>
         <div class="docs-code">
+            <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
             <pre><code>.w-100    /* width: 100% */
 .h-100    /* height: 100% */</code></pre>
         </div>
     </section>
+
+        </div> <!-- End docs-content -->
+    </div> <!-- End docs-layout -->
 
     <!-- Footer -->
     <footer class="text-center mt-8 p-6" style="border-top: 1px solid var(--gray-200);">
@@ -1406,6 +1560,69 @@ function toggleNav() {
         </p>
     </footer>
 
+</div>
+
+<!-- Form Modal -->
+<div class="modal-backdrop" id="formModal" onclick="closeFormModal(event)">
+    <div class="modal" onclick="event.stopPropagation()" style="max-width: 500px;">
+        <div class="modal-header">
+            <h5 class="modal-title">Add New Job Card</h5>
+            <button class="modal-close" onclick="closeFormModal()">&times;</button>
+        </div>
+        <form id="jobCardForm">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label required">Customer Name</label>
+                    <input type="text" class="form-control" name="customer_name" placeholder="Enter customer name" required>
+                </div>
+                <div class="d-flex gap-3">
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label required">Phone</label>
+                        <input type="tel" class="form-control" name="phone" placeholder="10-digit number" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" placeholder="email@example.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label required">Vehicle Number</label>
+                    <input type="text" class="form-control" name="vehicle_number" placeholder="e.g., MH12AB1234" required>
+                </div>
+                <div class="d-flex gap-3">
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">Vehicle Make</label>
+                        <input type="text" class="form-control" name="make" placeholder="e.g., Honda">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">Vehicle Model</label>
+                        <input type="text" class="form-control" name="model" placeholder="e.g., City">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Assign Mechanic</label>
+                    <select class="form-control" name="mechanic_id">
+                        <option value="">Select mechanic...</option>
+                        <option value="1">John Smith - Engine Specialist</option>
+                        <option value="2">Mike Johnson - Brake Expert</option>
+                        <option value="3">Sarah Davis - Electrical</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Issue Description</label>
+                    <textarea class="form-control" name="description" rows="3" placeholder="Describe the issue..."></textarea>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="urgent" id="urgentCheck">
+                    <label class="form-check-label" for="urgentCheck">Mark as urgent</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" onclick="closeFormModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Create Job Card</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script>
@@ -1427,11 +1644,90 @@ function closeModal(event) {
     }
 }
 
+// Form Modal functions
+function openFormModal() {
+    document.getElementById('formModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeFormModal(event) {
+    if (!event || event.target.classList.contains('modal-backdrop')) {
+        document.getElementById('formModal').classList.remove('show');
+        document.body.style.overflow = '';
+    }
+}
+
+// Handle form submission
+document.getElementById('jobCardForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Job Card Created Successfully!');
+    closeFormModal();
+    this.reset();
+});
+
 // Close modal on Escape key
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeModal();
+        closeFormModal();
     }
+});
+
+// Copy Code Function
+function copyCode(button) {
+    const codeBlock = button.nextElementSibling.querySelector('code');
+    const text = codeBlock.innerText;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        button.innerHTML = '✅ Copied!';
+        button.classList.add('copied');
+        
+        setTimeout(() => {
+            button.innerHTML = '📋 Copy';
+            button.classList.remove('copied');
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy:', err);
+        button.innerHTML = '❌ Failed';
+        setTimeout(() => {
+            button.innerHTML = '📋 Copy';
+        }, 2000);
+    });
+}
+
+// Add copy buttons to all code blocks on page load
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.docs-code').forEach(codeBlock => {
+        if (!codeBlock.querySelector('.copy-btn')) {
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.innerHTML = '📋 Copy';
+            copyBtn.onclick = function() { copyCode(this); };
+            codeBlock.insertBefore(copyBtn, codeBlock.firstChild);
+        }
+    });
+});
+
+// Sidebar active state on scroll
+const sections = document.querySelectorAll('section[id]');
+const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (scrollY >= sectionTop - 100) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    sidebarLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
 });
 
 // Smooth scroll for anchor links
