@@ -1,4 +1,34 @@
 import { handleRequest } from "./api.js";
+ 
+const addJobcardForm = document.getElementById("add_jobcard_form");
+const editJobcardForm = document.getElementById("edit_jobcard_form");
+const addJobcardButton = document.getElementById("add_jobcard_button");
+const updateJobcardButton = document.getElementById("update_jobcard_button"); 
+
+if(addJobcardButton && addJobcardForm){
+    addJobcardButton.addEventListener("click", async function (event) {
+        event.preventDefault();
+        const formData = new FormData(addJobcardForm);
+        await handleRequest(event, addJobcardForm, appRoutes.addJobcard);
+    });
+}
+updateJobcardButton.addEventListener("click", async function (event) {
+    console.log('Update jobcard button clicked');
+    event.preventDefault();
+    editJobcardForm.querySelector("#success_text").style.display = "block";
+    editJobcardForm.querySelector("#success_text").textContent = "Updating...";
+    const formData = new FormData(editJobcardForm);
+    const jobcardId = formData.get('id');
+    console.log('jobcardId:', jobcardId);
+    const url = appRoutes.updateJobcard.replace("ID", jobcardId);
+
+    console.log('updated url:', url);
+    await handleRequest(event, editJobcardForm, url, true);
+});
+
+ 
+
+  
 
 document.addEventListener('DOMContentLoaded', function () {
     // Services: show/hide and toggle required/disabled
@@ -58,34 +88,36 @@ const imageInput = document.getElementById('multiImageInput');
 const uploadWrapper = document.getElementById('imageUploadWrapper');
 const uploadBox = document.getElementById('imageUploadBox');
 let selectedFiles = [];
+if(imageInput){
 
-imageInput.addEventListener('change', function(e) {
-    const files = Array.from(e.target.files);
-    
-    files.forEach(file => {
-        if (file.type.startsWith('image/')) {
-            selectedFiles.push(file);
-            const index = selectedFiles.length - 1;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const div = document.createElement('div');
-                div.className = 'image-preview-item';
-                div.dataset.index = index;
-                div.innerHTML = `
-                    <img src="${e.target.result}" alt="Preview">
-                    <button type="button" class="remove-btn" onclick="removeImage(${index})">×</button>
-                `;
-                // Insert before the + button
-                uploadWrapper.insertBefore(div, uploadBox);
-            };
-            reader.readAsDataURL(file);
-        }
+    imageInput.addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+        
+        files.forEach(file => {
+            if (file.type.startsWith('image/')) {
+                selectedFiles.push(file);
+                const index = selectedFiles.length - 1;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.className = 'image-preview-item';
+                    div.dataset.index = index;
+                    div.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview">
+                        <button type="button" class="remove-btn" onclick="removeImage(${index})">×</button>
+                    `;
+                    // Insert before the + button
+                    uploadWrapper.insertBefore(div, uploadBox);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Clear input for re-selection
+        imageInput.value = '';
     });
-    
-    // Clear input for re-selection
-    imageInput.value = '';
-});
+}
 
 function removeImage(index) {
     selectedFiles[index] = null;
@@ -137,65 +169,3 @@ document.getElementById("vehicle_collected_by_owner").addEventListener("change",
     document.getElementById("vehicle_collected_by_input").style.display = "none";
 });
 
-const addJobcardForm = document.getElementById("add_jobcard_form");
-const editJobcardForm = document.getElementById("edit_jobcard_form");
-const addJobcardButton = document.getElementById("add_jobcard_button");
-const updateJobcardButton = document.getElementById("update_jobcard_button");
-const showAddJobcardButton = document.getElementById("add_jobcard");
-const editJobcardButton = document.getElementById("edit_button");
-// console.log(typeof handleRequest);
-addJobcardButton.addEventListener("click", async function (event) {
-    event.preventDefault();
-    const formData = new FormData(addJobcardForm);
-    await handleRequest(event, addJobcardForm, appRoutes.addJobcard);
-});
-
-updateJobcardButton.addEventListener("click", async function (event) {
-    editJobcardForm.querySelector("#success_text").style.display = "block";
-    editJobcardForm.querySelector("#success_text").textContent = "Updating...";
-    event.preventDefault();
-    const jobcardId = editJobcardForm.dataset.jobcardId;
-    const url = appRoutes.updateJobcard.replace("VEHICLE_ID", jobcardId);
-    await handleRequest(event, editJobcardForm, url, true);
-});
-
-showAddJobcardButton.addEventListener("click", function (e) {
-    const vehicle = JSON.parse(e.target.dataset.vehicle);
-    const vehicleNumberElement =
-        addJobcardForm.querySelector("#vehicle_number");
-    vehicleNumberElement.textContent = `Vehicle Number: ${vehicle.vehicle_number}`;
-    addJobcardForm.dataset.vehicleId = vehicle.id;
-});
-editJobcardButton.addEventListener("click", function (e) {
-    const jobcard = JSON.parse(e.target.dataset.jobcard);
-
-    editJobcardForm.dataset.jobcardId = jobcard.id;
-    const $columns = [
-        "jobcard_number",
-        "make",
-        "model",
-        "fuel_type",
-        "owner_name",
-        "owner_contact",
-        "secondary_number",
-        "email",
-        "address",
-    ];
-
-    $columns.forEach((column) => {
-        const inputField = editJobcardForm.querySelector("#" + column);
-        if (inputField) {
-            inputField.value = jobcard[column] ?? "";
-        }
-    });
-    const currentImage = editJobcardForm.querySelector(
-        "#current_jobcard_image"
-    );
-    const imageUrl = e.target.dataset.jobcard_image;
-    if (imageUrl && imageUrl !== "undefined") {
-        currentImage.src = imageUrl;
-        currentImage.style.display = "block";
-    } else {
-        currentImage.style.display = "none";
-    }
-});

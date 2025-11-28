@@ -93,6 +93,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'mobile_number' => 'required|numeric|digits:10',
             'otp' => 'required|numeric|digits:6',
+            'remember_me' => 'sometimes|boolean',
         ]);
 
         $mobileNumber = $validated['mobile_number'];
@@ -109,7 +110,8 @@ class AuthController extends Controller
 
         $user = User::where('number', $mobileNumber);
         if ($user->exists()) {
-            Auth::login($user->first());
+            $remember = $validated['remember_me'] ?? false;
+            Auth::login($user->first(), $remember);
             return response()->json([
                 'status' => 'success',
                 'redirect_url' => route('jobcards.index'),

@@ -23,6 +23,7 @@ class Jobcards extends Model
         'fuel_level',
         'vehicle_received_from',
         'vehicle_returned_to',
+        'assigned_date',
         'estimated_completion_date',
         'vehicle_condition',
         'vehicle_images',

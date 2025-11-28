@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('fuel_level')->default(0);
             $table->string('vehicle_received_from')->default('customer');
             $table->string('vehicle_returned_to')->default('customer');
+            $table->date('assigned_date');
             $table->date('estimated_completion_date')->nullable();
             $table->text('vehicle_condition')->nullable();
             $table->json('vehicle_images')->nullable();

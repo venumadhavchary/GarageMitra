@@ -109,10 +109,9 @@
                         </td>
                         <td style="text-align: right; padding-right: 1.5rem;">
                             <div class="d-flex gap-1 justify-content-end">
-                                <button class="btn btn-ghost btn-sm btn-icon" title="View Details" 
-                                        onclick="viewJob({{ $job->id }})">
+                                <a href="{{ route('jobcards.show', $job->id) }}" class="btn btn-ghost btn-sm btn-icon" title="View Details">
                                     👁️
-                                </button>
+                                </a>
                                 <button class="btn btn-ghost btn-sm btn-icon" title="Edit"
                                         data-toggle="modal" data-target="#editJobModal"
                                         data-id="{{ $job->id }}"

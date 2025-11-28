@@ -1,7 +1,7 @@
 const sendOtpButton = document.querySelector("#send_otp");
 const resendOtpButton = document.querySelector("#resend_otp");
 const phoneNumberField = document.querySelector("#mobile_number");
-const otpField = document.querySelector("#otp_field");
+const loginField = document.querySelector("#login_field");
 const loginButton = document.querySelector("#login_button");
 const errorMessage = document.querySelector("#error_text");
 const successMessage = document.querySelector("#success_text");
@@ -37,10 +37,9 @@ async function handleOtpRequest(isResend = false) {
 
         if (response.ok) {
             console.log("OTP sent successfully:", data);
-
-            otpField.style.display = "block";
+ 
             sendOtpButton.style.display = "none";
-            loginButton.style.display = "block";
+            loginField.style.display = "block";
             phoneNumberField.readOnly = true;
             successMessage.style.display = "block";
             successMessage.innerText =

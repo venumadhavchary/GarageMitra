@@ -16,13 +16,17 @@
                     <div class="field button">
                         <button id="send_otp" type="submit">Send Otp</button>
                     </div>
-                <div  class="field input" id="otp_field" style="display:none;">
-                    <label for="otp">Otp:</label>
-                    <a href="#" id="resend_otp">Resend Otp</a> 
-                    <input type="text" id="otp" name="otp" maxlength="10" inputmode="numeric" placeholder="Enter OTP" >
-                </div>
-                <div class="field button">
-                    <button id="login_button" style="display: none" type="submit">Login</button>
+                <div id="login_field" style="display: none">
+                    <div  class="field input" id="otp_field">
+                        <label for="otp">Otp:</label>
+                        <a href="#" id="resend_otp">Resend Otp</a> 
+                        <input type="text" id="otp" name="otp" maxlength="10" inputmode="numeric" placeholder="Enter OTP" >
+                    </div> 
+                        <input type="checkbox" id="remember_me" name="remember_me">
+                        <label for="remember_me">Remember Me</label> 
+                    <div class="field button">
+                        <button id="login_button" type="submit">Login</button>
+                    </div>
                 </div>
 
             </form>

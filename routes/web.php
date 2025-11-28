@@ -20,7 +20,9 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/jobcards', [JobcardsController::class, 'index'])->name('jobcards.index');
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::get('jobcards/{id}', [JobcardsController::class, 'show'])->name('jobcards.show');
     Route::get('jobcards/{vehicle_id}/create', [JobcardsController::class, 'create'])->name('jobcards.create');
+    Route::put('jobcards/{id}/update', [JobcardsController::class, 'update'])->name('jobcards.update');
     Route::post('jobcards/{vehicle_id}', [JobcardsController::class, 'store'])->name('jobcards.store');
     Route::get('vehicles/{id}', [VehiclesController::class, 'showJobs'])->name('vehicles.show');
     

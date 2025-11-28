@@ -31,7 +31,7 @@ class JobcardsController extends Controller
         $mechanics = Mechanics::all();
         $services = Service::all();
         $user = Auth::user();
-        return view('jobcards.create', compact('vehicle', 'mechanics', 'services','user'));
+        return view('jobcards.create', compact('vehicle', 'mechanics', 'services', 'user'));
     }
 
     /**
@@ -71,7 +71,7 @@ class JobcardsController extends Controller
         ]);
 
         $validated['services'] = $this->formatServices($validated['services']);
-        if(empty($validated['mechanic_name'])){
+        if (empty($validated['mechanic_name'])) {
             $validated['mechanic_name'] = Auth::user()->name;
         }
 
@@ -124,9 +124,11 @@ class JobcardsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Jobcards $jobcards)
+    public function show(Jobcards $jobcards, $id)
     {
-        //
+        $job = Jobcards::findOrFail($id);
+        $job->vehicle_images = json_decode($job->vehicle_images);
+        return view('jobcards.show', compact('job'));
     }
 
     /**
@@ -140,9 +142,21 @@ class JobcardsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Jobcards $jobcards)
+    public function update(Request $request, $id)
     {
-        //
+        $jobcard = Jobcards::findOrFail($id);
+        $validated = $request->validate([
+            'paid_amount' => 'nullable|integer|min:0',
+            'odometer_reading' => 'required|integer|min:0',
+            'fuel_level' => 'nullable|integer|min:0|max:100',
+            'vehicle_received_from' => 'required|string|max:255',
+            'vehicle_returned_to' => 'required|string|max:255',
+            'remarks' => 'nullable|string',
+        ]);
+ 
+        $result = $jobcard->update($validated); 
+
+        return response()->json(['message' => 'Jobcard updated successfully'], 200);
     }
 
     /**
