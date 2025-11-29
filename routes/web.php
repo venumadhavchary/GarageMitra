@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobcardsController;
 use App\Http\Controllers\MechanicsController;
 use App\Http\Controllers\VehiclesController;
+use App\Http\Controllers\BillController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -26,6 +27,9 @@ Route::middleware('auth')->group(function () {
     Route::post('jobcards/{vehicle_id}', [JobcardsController::class, 'store'])->name('jobcards.store');
     Route::get('vehicles/{id}', [VehiclesController::class, 'showJobs'])->name('vehicles.show');
     
+    Route::get('bill/{jobcard_id}/generate', [BillController::class, 'generateBill'])->name('bills.generate');
+    Route::post('bill/{jobcard_id}/store',[BillController::class, 'store'])->name('bills.store');
+
     Route::get('docs', function () {
         return view('docs');
     })->name('docs');

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('make');
             $table->string('model'); 
             $table->string('fuel_type');
-            $table->string('vechicle_type')->default('bike');
+            $table->string('vehicle_type')->default('bike');
             $table->string('vehicle_image')->nullable();
             $table->string('owner_name');
             $table->string('owner_contact');

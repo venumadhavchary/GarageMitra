@@ -49,14 +49,14 @@ class JobcardsController extends Controller
             'remarks' => 'nullable|string',
 
             'paid_amount' => 'nullable|integer|min:0',
-            'odometer_reading' => 'required|integer|min:0',
+            'odometer_reading' => 'nullable|integer|min:0',
             'fuel_level' => 'nullable|integer|min:0|max:100',
 
             'vehicle_received_from' => 'required|in:owner,other',
             'vehicle_received_from_other' => 'required_if:vehicle_received_from,other|max:255',
 
-            'vehicle_collected_by' => 'required|in:owner,other',
-            'vehicle_collected_by_other' => 'required_if:vehicle_collected_by,other|max:255',
+            'vehicle_returned_to' => 'required|in:owner,other',
+            'vehicle_returned_to_other' => 'required_if:vehicle_returned_to,other|max:255',
 
             'mechanic_name' => 'nullable|string|max:255',
             'status' => 'nullable|string|max:50',
@@ -71,6 +71,18 @@ class JobcardsController extends Controller
         ]);
 
         $validated['services'] = $this->formatServices($validated['services']);
+
+        $vehicle = Vehicles::findOrFail($vehicle_id);
+
+        $validated['vehicle_received_from'] =  ($validated['vehicle_received_from'] == 'other')
+            ? $validated['vechicle_received_from_other']
+            : $validated['vehicle_received_from'] = $vehicle->owner_name;
+
+        $validated['vehicle_returned_to'] =  ($validated['vehicle_returned_to'] == 'other')
+            ? $validated['vehicle_returned_to_other']
+            : $validated['vehicle_returned_to'] = $vehicle->owner_name;
+
+
         if (empty($validated['mechanic_name'])) {
             $validated['mechanic_name'] = Auth::user()->name;
         }
@@ -85,11 +97,13 @@ class JobcardsController extends Controller
         }
         $validated['vehicle_images'] = json_encode($images);
 
-        $vehicle = Vehicles::findOrFail($vehicle_id);
+
         $validated['vehicle_number'] = $vehicle->vehicle_number;
         $validated['vehicle_id'] = $vehicle_id;
         $validated['vehicle_type'] = $vehicle->vehicle_type;
 
+
+        $validated['jobcard_id'] = uniqid('JC_', true);
         // dd( $validated);
         $request->user()->jobcards()->create($validated);
 
@@ -109,12 +123,7 @@ class JobcardsController extends Controller
 
             // New service (text from "Other")
             $slug = strtolower(str_replace(' ', '_', $service));
-
-            // Create new service in DB
-            $created = Service::create([
-                'name' => $service,
-                'slug' => $slug
-            ]);
+ 
 
             // Add new slug to list
             $finalServices[] = $slug;
@@ -124,10 +133,14 @@ class JobcardsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Jobcards $jobcards, $id)
+    public function show($id)
     {
         $job = Jobcards::findOrFail($id);
         $job->vehicle_images = json_decode($job->vehicle_images);
+        $services = json_decode($job->services);
+        $result = array_map(fn($service) => str_replace('_', ' ', ucfirst($service)), $services);
+        $job->services = implode(', ', $result);
+
         return view('jobcards.show', compact('job'));
     }
 
@@ -153,8 +166,8 @@ class JobcardsController extends Controller
             'vehicle_returned_to' => 'required|string|max:255',
             'remarks' => 'nullable|string',
         ]);
- 
-        $result = $jobcard->update($validated); 
+
+        $result = $jobcard->update($validated);
 
         return response()->json(['message' => 'Jobcard updated successfully'], 200);
     }

@@ -13,16 +13,25 @@ return new class extends Migration
     {
         Schema::create('jobcards', function (Blueprint $table) {
             $table->id();
+            $table->string('jobcard_id')->unique();
+
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');  
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->unsignedBigInteger('bill_id')->nullable();
+            $table->foreign('bill_id')->references('id')->on('bills')->onDelete('cascade');
+
+            $table->unsignedBigInteger('vehicle_id')->nullable(); // Add this instead
+            $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');
+
             $table->string('mechanic_name');
             $table->string('vehicle_number');
-            $table->foreign('vehicle_number')->references('vehicle_number')->on('vehicles')->onDelete('cascade');
-            $table->json('services'); 
             $table->string('vehicle_type');
+            
+            $table->json('services');
             $table->text('remarks')->nullable();
-            $table->integer('paid_amount')->default(0);
-            $table->bigInteger('odometer_reading')->default(0);
+            $table->integer('paid_amount')->nullable();
+            $table->bigInteger('odometer_reading')->nullable();
             $table->integer('fuel_level')->default(0);
             $table->string('vehicle_received_from')->default('customer');
             $table->string('vehicle_returned_to')->default('customer');

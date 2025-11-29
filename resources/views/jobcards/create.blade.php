@@ -70,9 +70,9 @@
                     <div class="d-flex flex-wrap gap-4 mb-4">
                         <!-- Advance Pay -->
                         <div class="form-group mb-0" style="flex: 1; min-width: 200px;">
-                            <label class="form-label required">Advance Pay</label>
+                            <label class="form-label">Advance Pay</label>
                             <input type="text" class="form-control @error('paid_amount') is-invalid @enderror"
-                                name="paid_amount" value="{{ old('paid_amount') }}" required
+                                name="paid_amount" value="{{ old('paid_amount') }}" 
                                 placeholder="Advance payment amount">
                             @error('paid_amount')
                                 <small class="text-danger d-block">{{ $message }}</small>
@@ -81,7 +81,7 @@
 
                         <!-- Odometer -->
                         <div class="form-group mb-0" style="flex: 1; min-width: 200px;">
-                            <label class="form-label required">Odometer</label>
+                            <label class="form-label">Odometer</label>
                             <input type="tel" class="form-control @error('odometer_reading') is-invalid @enderror"
                                 name="odometer_reading" value="{{ old('odometer_reading') }}"
                                 placeholder="Odometer reading">
@@ -93,9 +93,9 @@
 
                     <div class="form-group">
                         <label class="form-label">Fuel Range: <span
-                                id="rangeValue">{{ old('fuel_level', 50) }}</span></label>
+                                id="rangeValue">{{ old('fuel_level', 0) }}</span></label>
                         <input type="range" class="form-range" min="0" max="100" name="fuel_level"
-                            value="{{ old('fuel_level', 50) }}"
+                            value="{{ old('fuel_level', 0) }}"
                             oninput="document.getElementById('rangeValue').textContent = this.value">
                         @error('fuel_level')
                             <small class="text-danger d-block">{{ $message }}</small>
@@ -120,15 +120,15 @@
                         <div class="form-group mb-0" style="flex: 1; min-width: 200px;">
                             <label class="form-label required">Vehicle Collected By</label>
                             <div class="form-check">
-                                <input type="radio" class="form-check-input" name="vehicle_collected_by"
-                                    id="vehicle_collected_by_owner"  value="owner" checked>
-                                <label class="form-check-label" for="vehicle_collected_by_owner">Owner
+                                <input type="radio" class="form-check-input" name="vehicle_returned_to"
+                                    id="vehicle_returned_to_owner"  value="owner" checked>
+                                <label class="form-check-label" for="vehicle_returned_to_owner">Owner
                                     {{ $vehicle->owner_name }}</label>
                             </div>
                             <div class="form-check">
-                                <input type="radio" class="form-check-input" id="vehicle_collected_by_other"
-                                    name="vehicle_collected_by" value="other">
-                                <label class="form-check-label" for="vehicle_collected_by_other">Other</label>
+                                <input type="radio" class="form-check-input" id="vehicle_returned_to_other"
+                                    name="vehicle_returned_to" value="other">
+                                <label class="form-check-label" for="vehicle_returned_to_other">Other</label>
                             </div>
                         </div>
                     </div>
@@ -139,8 +139,8 @@
                                 placeholder="Name who will receive the vehicle">
                         </div>
                         <div class="form-group mb-0" style="flex: 1; min-width: 200px; display:none;"
-                            id="vehicle_collected_by_input">
-                            <input type="text" class="form-control" name="vehicle_collected_by_other"
+                            id="vehicle_returned_to_input">
+                            <input type="text" class="form-control" name="vehicle_returned_to_other"
                                 placeholder="Name who will collect the vehicle">
                         </div>
                     </div>

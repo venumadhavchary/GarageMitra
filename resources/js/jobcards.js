@@ -12,19 +12,22 @@ if(addJobcardButton && addJobcardForm){
         await handleRequest(event, addJobcardForm, appRoutes.addJobcard);
     });
 }
-updateJobcardButton.addEventListener("click", async function (event) {
-    console.log('Update jobcard button clicked');
-    event.preventDefault();
-    editJobcardForm.querySelector("#success_text").style.display = "block";
-    editJobcardForm.querySelector("#success_text").textContent = "Updating...";
-    const formData = new FormData(editJobcardForm);
-    const jobcardId = formData.get('id');
-    console.log('jobcardId:', jobcardId);
-    const url = appRoutes.updateJobcard.replace("ID", jobcardId);
+if(updateJobcardButton){
 
-    console.log('updated url:', url);
-    await handleRequest(event, editJobcardForm, url, true);
-});
+    updateJobcardButton.addEventListener("click", async function (event) {
+        console.log('Update jobcard button clicked');
+        event.preventDefault();
+        editJobcardForm.querySelector("#success_text").style.display = "block";
+        editJobcardForm.querySelector("#success_text").textContent = "Updating...";
+        const formData = new FormData(editJobcardForm);
+        const jobcardId = formData.get('id');
+        console.log('jobcardId:', jobcardId);
+        const url = appRoutes.updateJobcard.replace("ID", jobcardId);
+    
+        console.log('updated url:', url);
+        await handleRequest(event, editJobcardForm, url, true);
+    });
+}
 
  
 
@@ -66,10 +69,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Vehicle Collected By: radios
-    const colOwnerRadio = document.getElementById('vehicle_collected_by_owner');
-    const colOtherRadio = document.getElementById('vehicle_collected_by_other');
-    const colInputWrap  = document.getElementById('vehicle_collected_by_input');
-    const colInputText  = document.getElementById('vehicle_collected_by_text');
+    const colOwnerRadio = document.getElementById('vehicle_returned_to_owner');
+    const colOtherRadio = document.getElementById('vehicle_returned_to_other');
+    const colInputWrap  = document.getElementById('vehicle_returned_to_input');
+    const colInputText  = document.getElementById('vehicle_returned_to_text');
 
     if (colOwnerRadio && colOtherRadio && colInputWrap && colInputText) {
         function showColInput(show) {
@@ -156,8 +159,8 @@ document.getElementById("vehicle_recieved_from_other").addEventListener("change"
 document.getElementById("vehicle_received_from_owner").addEventListener("change", function () {
     document.getElementById("vehicle_recieved_from_input").style.display = "none";
 });
-document.getElementById("vehicle_collected_by_other").addEventListener("change", function () {
-    const inputBox = document.getElementById("vehicle_collected_by_input");
+document.getElementById("vehicle_returned_to_other").addEventListener("change", function () {
+    const inputBox = document.getElementById("vehicle_returned_to_input");
 
     if (this.checked) {
         inputBox.style.display = "block";
@@ -165,7 +168,12 @@ document.getElementById("vehicle_collected_by_other").addEventListener("change",
         inputBox.style.display = "none";
     }
 });
-document.getElementById("vehicle_collected_by_owner").addEventListener("change", function () {
-    document.getElementById("vehicle_collected_by_input").style.display = "none";
+document.getElementById("vehicle_returned_to_owner").addEventListener("change", function () {
+    document.getElementById("vehicle_returned_to_input").style.display = "none";
 });
 
+
+// View Job
+function viewJob(id) {
+    window.location.href = `/jobcards/${id}`;
+}

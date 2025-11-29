@@ -187,7 +187,7 @@ class AuthController extends Controller
         session()->forget('verified_phone');
         return response()->json([
             'status' => 'success',
-            'redirect_url' => route('dashboard'),
+            'redirect_url' => route('jobcards.index'),
             'message' => 'Registration successful. Redirecting to dashboard.',
         ], 200);
     }
