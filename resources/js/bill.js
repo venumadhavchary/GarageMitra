@@ -60,7 +60,7 @@ function addSpareAndLabour(spareName, quantity, unitPrice){
     labour_row.innerHTML = `
         <td>${labourTableBody.children.length + 1}</td>
         <td>${labourFor}</td>
-        <td></td> 
+        <td>0</td> 
     `;
     labourTableBody.appendChild(labour_row);
     closeModal('add_spare_part');
