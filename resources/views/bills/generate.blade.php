@@ -69,7 +69,7 @@
                         <div class="form-group">
                             <label for="estimated_cost" class="form-label">Estimated Cost</label>
                             <input type="number" class="form-control" name="estimated_cost" id="estimated_cost"
-                               value="10" readonly>
+                               value="0.00" readonly>
                         </div>
                         <div class="form-group">
                             <label for="estimated_delivery" class="form-label">Estimate Delivery</label>
