@@ -25,7 +25,26 @@
                                 </tr>
                             </thead>
                             <tbody id="bill_table_body">
-
+                                @foreach ($bill->spare_parts as $spare)
+                                <tr data-index="{{ $spare->id }}">
+                                    <td style="padding-left: 1.5rem;">
+                                        <strong>#{{ str_pad($spare->id, 4, '0', STR_PAD_LEFT) }}</strong>   
+                                        <input hidden name="spare_parts[][id]" value="{{ $spare->id }}">
+                                    </td>
+                                    <td>
+                                        <strong>{{ $spare->name }} ({{ $spare->quantity }})</strong>
+                                        <input hidden name="spare_part[][name]" value="{{ $spare->name }}">
+                                        <input hidden name="spare_part[][qty]" value="{{ $spare->quantity }}">
+                                    </td>
+                                    <td>
+                                        {{ $spare->price_per_unit }}
+                                        <input hidden name="spare_part[][price_per_unit]" value="{{ $spare->price_per_unit }}">                                                                                                                                     
+                                    </td>
+                                    <td>{{ $spare->price }}</td>
+                                    <td> <a class="btn btn-danger btn-sm" onclick="removeSparePart(this)">🗑️</a></td>
+                                </tr>
+                                    
+                                @endforeach
                             </tbody>
                         </table>
 
@@ -41,7 +60,21 @@
                                 </tr>
                             </thead>
                             <tbody id="labour_charge_table_body">
-
+                                @foreach ($bill->labour_charges as $labour )
+                                <tr data-index="{{ $labour->id }}">
+                                    <td style="padding-left: 1.5rem;">
+                                        <strong>#{{ str_pad($labour->id, 4, '0', STR_PAD_LEFT) }}</strong>   
+                                        <input hidden name="labour_charges[][id]" value="{{ $labour->id }}">
+                                    </td>
+                                    <td>
+                                        <strong>{{ $labour->name }}</strong>
+                                        <input hidden name="labour_charges[][name]" value="{{ $labour->name }}">
+                                    </td>
+                                    <td>
+                                        {{ $labour->charge }}
+                                        <input hidden name="labour_charges[][charge]" value="{{ $labour->charge }}">
+                                    </td>    
+                                @endforeach
                             </tbody>
                         </table>
 
@@ -58,7 +91,21 @@
                                 </tr>
                             </thead>
                             <tbody id="services_table_body">
-
+                                @foreach ($bill->services_to_do as $service )
+                                <tr data-index="{{ $service->id }}">
+                                    <td style="padding-left: 1.5rem;">
+                                        <strong>#{{ str_pad($service->id, 4, '0', STR_PAD_LEFT) }}</strong>   
+                                        <input hidden name="services[][id]" value="{{ $service->id }}">
+                                    </td>
+                                    <td>
+                                        <strong>{{ $service->name }}</strong>
+                                        <input hidden name="service_names[][name]" value="{{ $service->name }}">
+                                    </td>
+                                    <td>{{ $service->price }}
+                                        <input hidden name="service_prices[][price]" value="{{ $service->price }}">
+                                    </td>  
+                                    <td> <a class="btn btn-danger btn-sm" onclick="removeService(this)">🗑️</a></td>  
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -71,11 +118,12 @@
                         <div class="form-group">
                             <label for="estimated_cost" class="form-label">Estimated Cost</label>
                             <input type="number" class="form-control" name="estimated_cost" id="estimated_cost"
-                                value="0.00" readonly>
+                                value="{{ $bill->total_amount }}" readonly>
                         </div>
                         <div class="form-group">
                             <label for="estimated_delivery" class="form-label">Estimate Delivery</label>
-                            <input type="date" class="form-control" name="estimated_delivery" id="estimated_delivery">
+                            <input type="date" class="form-control" name="estimated_delivery" id="estimated_delivery"
+                                value="{{ $bill->estimated_delivery }}">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Upload Vehicle Images</label>
@@ -90,7 +138,7 @@
                                 <!-- Images will be inserted here dynamically -->
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block" id="create_bill">Create Bill</button>
+                        <button type="submit" class="btn btn-primary btn-block" id="create_bill">Update Bill</button>
                 </form>
             </div>
         </div>

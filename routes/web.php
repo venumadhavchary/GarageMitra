@@ -29,7 +29,8 @@ Route::middleware('auth')->group(function () {
     
     Route::get('bill/{jobcard_id}/generate', [BillController::class, 'generateBill'])->name('bills.generate');
     Route::post('bill/{jobcard_id}/store',[BillController::class, 'store'])->name('bills.store');
-
+    Route::get('bill/{id}/show',[BillController::class, 'show'])->name('bills.show');
+    Route::put('bill/{id}/update',[BillController::class, 'update'])->name('bills.update');
     Route::get('docs', function () {
         return view('docs');
     })->name('docs');

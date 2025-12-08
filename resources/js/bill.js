@@ -1,3 +1,6 @@
+import { handleRequest } from './api.js';
+
+
 let sparePartsCounter = 0;
 let servicesCounter = 0;
 let labourChargeCounter = 0;
@@ -224,6 +227,25 @@ function addServiceToTable(name, price) {
     closeModal("add_service");
 }
 
+function removeService(button) {    
+    const row = button.closest("tr");
+    row.remove();
+    updateServiceIds();
+    calculateTotal();
+}
+
+function updateServiceIds() {
+    const serviceRows = document.querySelectorAll("#services_table_body tr");
+    serviceRows.forEach((row, index) => {
+        const idCell = row.querySelector("td:first-child");
+        idCell.textContent = index + 1;
+        const idInput = row.querySelector('input[name*="[id]"]');
+        if (idInput) {
+            idInput.value = index + 1;
+        }
+    });
+}
+
 function calculateTotal() {
     let total = 0;
 
@@ -250,7 +272,48 @@ function calculateTotal() {
     total += additionalCharge;
 
     document.getElementById("estimated_cost").value = total.toFixed(2);
+
+    toggleCreateBillButton();
 }
+
+
+const BillForm = document.getElementById("bill_form");
+const createBill = document.getElementById("create_bill");
+const addVehicleButton = document.getElementById("add_vehicle_button");
+const updateVehicleButton = document.getElementById("update_vehicle_button");
+const editVehicleButtons = document.querySelectorAll(".edit-vehicle-btn");
+ 
+if (createBill && BillForm) {
+    createBill.addEventListener("click", async function (event) {
+        event.preventDefault();
+        
+        // Show loading state
+        createBill.disabled = true;
+        createBill.innerHTML = '⏳ Generating Bill...';
+        
+        try {
+            await handleRequest(event, BillForm, appRoutes.createBill);
+        } finally {
+            //focus on error text if any
+            document.getElementById("bill_form").scrollIntoView();
+            createBill.disabled = false;
+            createBill.innerHTML = 'Generate Bill';
+        }
+    });
+}
+
+
+//if empty serices and spares disable create bill button
+function toggleCreateBillButton() {
+    const hasSpares = document.getElementById("bill_table_body").children.length > 0;
+    const hasServices = document.getElementById("services_table_body").children.length > 0;
+    const createBillBtn = document.getElementById('create_bill');
+    
+    if (createBillBtn) {
+        createBillBtn.disabled = !(hasSpares || hasServices);
+    }
+}
+
 
 document
     .getElementById("additional_labour_charge")
@@ -259,3 +322,5 @@ document
 
 window.calculateTotal = calculateTotal;
 window.removeSpareRow = removeSpareRow;
+window.removeService = removeService;
+toggleCreateBillButton();

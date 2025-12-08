@@ -93,10 +93,15 @@
                     </button>
                 </div>
                 <div class="card-body">
-
-                    <a href="{{ route('bills.generate', $job->id)  }}" class="btn btn-primary" >
-                        Create Bill
-                    </a>
+                    @if (!$bill)
+                        <a href="{{ route('bills.generate', $job->id) }}" class="btn btn-primary">
+                            Create Bill
+                        </a>
+                    @else
+                        <a href="{{ route('bills.show', $job->id) }}" class="btn btn-primary">
+                            View Bill
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>

@@ -141,7 +141,13 @@ class JobcardsController extends Controller
         $result = array_map(fn($service) => str_replace('_', ' ', ucfirst($service)), $services);
         $job->services = implode(', ', $result);
 
-        return view('jobcards.show', compact('job'));
+        $bill = $job->bill;
+        if($bill){
+            $bill->spare_parts = json_decode($bill->spare_parts);
+            $bill->labour_charges = json_decode($bill->labour_charges);
+            $bill->services_to_do = json_decode($bill->services_to_do);
+        }
+        return view('jobcards.show', compact('job', 'bill'));
     }
 
     /**
