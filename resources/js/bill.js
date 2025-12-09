@@ -27,8 +27,8 @@ AddSpare.addEventListener("click", function () {
         return;
     }
 
-    const quantity = formData.get("quantity");
-    const unitPrice = formData.get("unit_price");
+    const quantity = formData.get("quantity").replace(/^0+/, '') || '0';
+    let unitPrice = formData.get("unit_price").replace(/^0+/, '') || '0'; 
 
     //if not integer show error
     if (!Number.isInteger(Number(quantity))) {
@@ -95,13 +95,14 @@ function addSpareAndLabour(spareName, quantity, unitPrice) {
                 <td>
                     ${labourFor}
                     <input type="hidden" name="labour_charges[${labourChargeCounter}][id]" value="${labourId}">
+                    <input type="hidden" name="labour_charges[${labourChargeCounter}][spare_id]" value="${spareId}">
                     <input type="hidden" name="labour_charges[${labourChargeCounter}][name]" value="${labourFor}">
                 </td>
                 <td>
                     <input type="number" class="form-control form-control-sm" 
                            name="labour_charges[${labourChargeCounter}][charge]" 
                            value="0" min="0" step="100" 
-                           oninput="calculateTotal()">
+                            oninput="this.value = this.value.replace(/^0+/, '') || '0'; calculateTotal()">
                 </td> 
             `;
     labourTableBody.appendChild(labourRow);
@@ -119,7 +120,7 @@ function removeSpareRow(button) {
     row.remove();
 
     const labourRow = document.querySelector(
-        `#labour_charge_table_body tr[data-index="${spareId}"]`
+        `#labour_charge_table_body tr[data-spare-index="${spareId}"]`
     );
     console.log("Removing linked labour row:", labourRow);
     if (labourRow) {
@@ -178,7 +179,7 @@ addServiceButton.addEventListener("click", function () {
         return;
     }
     const serviceName = formData.get("service_name");
-    const price = formData.get("price");
+    const price = formData.get("price").replace(/^0+/, '') || '0';
 
     if (!Number.isInteger(Number(price))) {
         addServiceForm.querySelector("#price").textContent =
@@ -273,16 +274,13 @@ function calculateTotal() {
 
     document.getElementById("estimated_cost").value = total.toFixed(2);
 
-    toggleCreateBillButton();
+    toggleBillButton();
 }
 
 
 const BillForm = document.getElementById("bill_form");
 const createBill = document.getElementById("create_bill");
-const addVehicleButton = document.getElementById("add_vehicle_button");
-const updateVehicleButton = document.getElementById("update_vehicle_button");
-const editVehicleButtons = document.querySelectorAll(".edit-vehicle-btn");
- 
+const updateBill = document.getElementById("update_bill");
 if (createBill && BillForm) {
     createBill.addEventListener("click", async function (event) {
         event.preventDefault();
@@ -302,15 +300,34 @@ if (createBill && BillForm) {
     });
 }
 
+if (updateBill && BillForm) {
+    updateBill.addEventListener("click", async function (event) {
+        event.preventDefault();
+        
+        // Show loading state
+        updateBill.disabled = true;
+        updateBill.innerHTML = '⏳ Saving Bill...';
+        
+        try {
+            await handleRequest(event, BillForm, appRoutes.updateBill, true);
+        } finally {
+            //focus on error text if any
+            document.getElementById("bill_form").scrollIntoView();
+            updateBill.disabled = false;
+            updateBill.innerHTML = 'Update Bill';
+        }
+    });
+}
+
 
 //if empty serices and spares disable create bill button
-function toggleCreateBillButton() {
+function toggleBillButton() {
     const hasSpares = document.getElementById("bill_table_body").children.length > 0;
     const hasServices = document.getElementById("services_table_body").children.length > 0;
-    const createBillBtn = document.getElementById('create_bill');
+    const billBtn = document.getElementById('create_bill') ?? document.getElementById('update_bill');
     
-    if (createBillBtn) {
-        createBillBtn.disabled = !(hasSpares || hasServices);
+    if (billBtn) {
+        billBtn.disabled = !(hasSpares || hasServices);
     }
 }
 
@@ -323,4 +340,4 @@ document
 window.calculateTotal = calculateTotal;
 window.removeSpareRow = removeSpareRow;
 window.removeService = removeService;
-toggleCreateBillButton();
+toggleBillButton();

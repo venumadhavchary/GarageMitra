@@ -128,49 +128,67 @@ function removeImage(index) {
     if (item) item.remove();
 }
 
+const oldJobCheckbox = document.getElementById("old_job");
+if (oldJobCheckbox) {
+    oldJobCheckbox.addEventListener("change", function () {
+        const jobcardNumberInput = document.getElementById("assigned_date");
+        if (this.checked) {
+            jobcardNumberInput.removeAttribute("readonly"); 
+        } else {
+            jobcardNumberInput.setAttribute("readonly", "readonly"); 
+        }
+    });
+}
 
-document.getElementById("old_job").addEventListener("change", function () {
-    const jobcardNumberInput = document.getElementById("assigned_date");
-    if (this.checked) {
-        jobcardNumberInput.removeAttribute("readonly"); 
-    } else {
-        jobcardNumberInput.setAttribute("readonly", "readonly"); 
-    }
-});
+const otherServiceCheckbox2 = document.getElementById("other_service");
+if (otherServiceCheckbox2) {
+    otherServiceCheckbox2.addEventListener("change", function () {
+        const inputBox = document.getElementById("other_service_input");
+        if (this.checked) {
+            inputBox.style.display = "block";
+        } else {
+            inputBox.style.display = "none";
+        }
+    });
+}
 
-document.getElementById("other_service").addEventListener("change", function () {
-    const inputBox = document.getElementById("other_service_input");
+const vehicleReceivedOther = document.getElementById("vehicle_recieved_from_other");
+if (vehicleReceivedOther) {
+    vehicleReceivedOther.addEventListener("change", function () {
+        const inputBox = document.getElementById("vehicle_recieved_from_input");
+        if (this.checked) {
+            inputBox.style.display = "block";
+        } else {
+            inputBox.style.display = "none";
+        }
+    });
+}
 
-    if (this.checked) {
-        inputBox.style.display = "block";
-    } else {
-        inputBox.style.display = "none";
-    }
-});
-document.getElementById("vehicle_recieved_from_other").addEventListener("change", function () {
-    const inputBox = document.getElementById("vehicle_recieved_from_input");
+const vehicleReceivedOwner = document.getElementById("vehicle_received_from_owner");
+if (vehicleReceivedOwner) {
+    vehicleReceivedOwner.addEventListener("change", function () {
+        document.getElementById("vehicle_recieved_from_input").style.display = "none";
+    });
+}
 
-    if (this.checked) {
-        inputBox.style.display = "block";
-    } else {
-        inputBox.style.display = "none";
-    }
-});
-document.getElementById("vehicle_received_from_owner").addEventListener("change", function () {
-    document.getElementById("vehicle_recieved_from_input").style.display = "none";
-});
-document.getElementById("vehicle_returned_to_other").addEventListener("change", function () {
-    const inputBox = document.getElementById("vehicle_returned_to_input");
+const vehicleReturnedOther = document.getElementById("vehicle_returned_to_other");
+if (vehicleReturnedOther) {
+    vehicleReturnedOther.addEventListener("change", function () {
+        const inputBox = document.getElementById("vehicle_returned_to_input");
+        if (this.checked) {
+            inputBox.style.display = "block";
+        } else {
+            inputBox.style.display = "none";
+        }
+    });
+}
 
-    if (this.checked) {
-        inputBox.style.display = "block";
-    } else {
-        inputBox.style.display = "none";
-    }
-});
-document.getElementById("vehicle_returned_to_owner").addEventListener("change", function () {
-    document.getElementById("vehicle_returned_to_input").style.display = "none";
-});
+const vehicleReturnedOwner = document.getElementById("vehicle_returned_to_owner");
+if (vehicleReturnedOwner) {
+    vehicleReturnedOwner.addEventListener("change", function () {
+        document.getElementById("vehicle_returned_to_input").style.display = "none";
+    });
+}
 
 
 // View Job

@@ -12,6 +12,7 @@
                         @csrf
 
                         <div class="alert alert-danger" style="display: none;" id="error_text"></div>
+                        <div class="alert alert-success" style="display: none;" id="success_text"></div>
                         <input type="hidden" name="job_id" value="{{ $job->id }}">
                         <h5>Spare Parts Expected</h5>
                         <table class="table mb-0" id="spare_parts_table">

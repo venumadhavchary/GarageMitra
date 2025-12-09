@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('jobcard_id'); 
-            $table->json('spare_parts');
-            $table->json('services_to_do');
-            $table->json('labour_charges');
+            $table->json('spare_parts')->nullable();
+            $table->json('services_to_do')->nullabale();
+            $table->json('labour_charges')->nullable();
             $table->integer('total_amount');
             $table->integer('paid_amount')->default(0);
             $table->integer('discount')->default(0);
+            $table->date('estimated_delivery')->nullable();
+            $table->json('vehicle_images')->nullable();
             $table->string('status')->default('unpaid');
             $table->timestamps();
         });

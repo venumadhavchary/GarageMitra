@@ -94,7 +94,9 @@ class BillController extends Controller
     public function show($id)
     {
         $bill = Bill::where('jobcard_id', $id)->first();
-
+        if(!$bill){
+            return redirect()->route('bills.generate', $id);
+        }
         $job = Jobcards::findOrFail($id);
 
         $bill->spare_parts = json_decode($bill->spare_parts);
@@ -108,15 +110,62 @@ class BillController extends Controller
      */
     public function edit(Bill $bill)
     {
-        //
+        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Bill $bill)
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'spare_parts' => 'nullable|array',
+            'labour_charges' => 'nullable|array',
+            'services' => 'required|array',
+            'additional_labour_charge' => 'nullable|numeric',
+            'estimated_delivery' => 'nullable|date',
+            'vehicle_images' => 'nullable|array',
+            'vehicle_images.*' => 'nullable|image|max:2048',
+        ]);
+
+        $bill = Bill::where('jobcard_id', $id)->first();
+
+        $validated['spare_parts'] = json_encode($validated['spare_parts'] ?? []);
+        $validated['labour_charges'] = json_encode($validated['labour_charges'] ?? []);
+        $validated['services_to_do'] = json_encode($validated['services'] ?? []);
+
+        $total_amount = 0;
+        if(isset($validated['spare_parts'])){
+            foreach (json_decode($validated['spare_parts'], true) as $part){
+                $total_amount += $part['price_per_unit'] * $part['qty'];
+            }
+        }
+        if(isset($validated['labour_charges'])){
+            foreach (json_decode($validated['labour_charges'], true) as $labour){
+                $total_amount += $labour['charge'];
+            }
+        }
+        if(isset($validated['additional_labour_charge'])){
+            $total_amount += $validated['additional_labour_charge'];
+        }
+        if(isset($validated['services_to_do'])){
+            foreach (json_decode($validated['services_to_do'], true) as $service){
+                $total_amount += $service['price'];
+            }
+        }
+        $validated['total_amount'] = $total_amount;
+        $images = [];
+        if($request->hasFile('vehicle_images')){
+            foreach ($request->file('vehicle_images') as $image){
+                $imageName = time().'_'.$image->getClientOriginalExtension();
+                $image->move(public_path('bills/vehicles') , $imageName);
+                $images[] = $imageName;
+            }
+        }
+        $validated['vehicle_images'] = json_encode($images);
+        $bill->update($validated);
+
+        return response()->json(['message' => 'Bill updated successfully', 'url' => route('jobcards.show', $bill->jobcard_id)], 200);
     }
 
     /**
