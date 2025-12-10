@@ -195,3 +195,5 @@ if (vehicleReturnedOwner) {
 function viewJob(id) {
     window.location.href = `/jobcards/${id}`;
 }
+
+window.removeImage = removeImage;
