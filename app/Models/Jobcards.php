@@ -24,6 +24,7 @@ class Jobcards extends Model
         'odometer_reading',
         'fuel_level',
         'vehicle_received_from',
+        'vehicle_collected_by',
         'vehicle_returned_to',
         'assigned_date',
         'estimated_completion_date',

@@ -34,6 +34,7 @@ return new class extends Migration
             $table->bigInteger('odometer_reading')->nullable();
             $table->integer('fuel_level')->default(0);
             $table->string('vehicle_received_from')->default('customer');
+            $table->string('vehicle_collected_by')->default('owner');
             $table->string('vehicle_returned_to')->default('customer');
             $table->date('assigned_date');
             $table->date('estimated_completion_date')->nullable();

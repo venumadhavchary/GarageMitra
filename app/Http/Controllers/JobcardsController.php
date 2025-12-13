@@ -184,12 +184,10 @@ class JobcardsController extends Controller
         $validated = $request->validate([
             'vehicle_returned_to' => 'required|string|max:255',
             'vehicle_returned_to_other' => 'nullable|string|max:255',
-            'services' => 'nullable|array|min:1',
-            'services.*' => 'string|max:255',
+            'odometer_reading' => 'required|integer|min:0',
             'remarks' => 'nullable|string',
             'vehicle_images' => 'nullable|array',
             'vehicle_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'odometer_reading' => 'required|integer|min:0',
         ]); 
         $validated['vehicle_returned_to'] =  ($validated['vehicle_returned_to'] == 'other')
             ? $validated['vehicle_returned_to_other']
@@ -208,7 +206,7 @@ class JobcardsController extends Controller
         $validated['status'] = 'completed';
         $jobcard->update($validated);
 
-        return redirect()->route('jobcards.show', $id)->with('success', 'Jobcard marked as completed.');
+        return response()->json(['message' => 'Jobcard marked as complete successfully'], 200);
     }
     /**
      * Remove the specified resource from storage.

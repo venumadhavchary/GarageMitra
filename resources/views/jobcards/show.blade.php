@@ -7,7 +7,14 @@
         <div class="d-flex justify-content-center align-items-center mb-6 flex-wrap gap-3">
             <div class="card">
                 <div class="card-header">
-                    <h1 class="mb-1">{{ $job->vehicle_number }}</h1>
+                    <h1 class="mb-1">
+                        {{ $job->vehicle_number }} -
+                        @if($job->status != 'completed')
+                            <span class="text-primary">🕐 Work In Progress</span>
+                        @else
+                            <span class="text-success">✅ Work Completed</span>
+                        @endif
+                    </h1>
                     <button class="btn btn-primary" onclick="openModal('edit_jobcard', {{ $job }})">
                         Edit
                     </button>
@@ -79,6 +86,16 @@
                             <button class="btn btn-outline-secodary btn-block">{{ $job->vehicle_returned_to }}</button>
                         </div>
                     </div>
+                    @if ($job->status == 'completed')
+                        <div class="d-flex gap-3">
+                            <div class="form-group" style="flex: 1;">
+                                <button class="btn btn-primary btn-block">Vehicle Delivered To</button>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <button class="btn btn-outline-secodary btn-block">{{ $job->vehicle_returned_to }}</button>
+                            </div>
+                        </div>
+                    @endif
                     <div class="form-group">
                         <button class="btn btn-primary btn-block">Remarks</button>
                         <p class="mt-2"> {{ $job->remarks }}</p>
@@ -93,19 +110,21 @@
                     </button>
                 </div>
                 <div class="card-body">
-                    @if (!$bill)
-                        <a href="{{ route('bills.generate', $job->id) }}" class="btn btn-primary">
-                            Create Bill
-                        </a>
-                    @else
-                        <a href="{{ route('bills.show', $job->id) }}" class="btn btn-primary">
-                            View Bill
-                        </a>
-                    @endif
-                     @if ($bill) 
-                        <button class="btn btn-primary" onclick="openModal('complete_jobcard', {{ $job }})">
-                            Mark Completed
-                        </button>
+                    @if ($job->status != 'completed')
+                        @if (!$bill)
+                            <a href="{{ route('bills.generate', $job->id) }}" class="btn btn-primary">
+                                Create Bill
+                            </a>
+                        @else
+                            <a href="{{ route('bills.show', $job->id) }}" class="btn btn-primary">
+                                View Bill
+                            </a>
+                        @endif
+                        @if ($bill)
+                            <button class="btn btn-primary" onclick="openModal('complete_jobcard', {{ $job }})">
+                                Mark Completed
+                            </button>
+                        @endif
                     @endif
                 </div>
             </div>
@@ -114,7 +133,8 @@
 
     <script>
         appRoutes = {
-            updateJobcard: "{{ route('jobcards.update', 'ID') }}",
+            updateJobcard: "{{ route('jobcards.update', $job->id) }}",
+            completeJobcard: "{{ route('jobcards.complete', $job->id) }}",
         }
     </script>
 
