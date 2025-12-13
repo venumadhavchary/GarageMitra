@@ -171,6 +171,28 @@ if (vehicleReceivedOwner) {
     });
 }
 
+
+const vehicleCollectedOther = document.getElementById("vehicle_collected_by_other");
+if (vehicleCollectedOther) {
+    vehicleCollectedOther.addEventListener("change", function () {
+        const inputBox = document.getElementById("vehicle_collected_by_input");
+        if (this.checked) {
+            inputBox.style.display = "block";
+        } else {
+            inputBox.style.display = "none";
+        }
+    });
+}
+
+const vehicleCollectedOwner = document.getElementById("vehicle_collected_by_owner");
+if (vehicleCollectedOwner) {
+    vehicleCollectedOwner.addEventListener("change", function () {
+        document.getElementById("vehicle_collected_by_input").style.display = "none";
+    });
+}
+
+
+
 const vehicleReturnedOther = document.getElementById("vehicle_returned_to_other");
 if (vehicleReturnedOther) {
     vehicleReturnedOther.addEventListener("change", function () {

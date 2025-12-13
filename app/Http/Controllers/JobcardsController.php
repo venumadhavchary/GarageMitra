@@ -55,8 +55,8 @@ class JobcardsController extends Controller
             'vehicle_received_from' => 'required|in:owner,other',
             'vehicle_received_from_other' => 'required_if:vehicle_received_from,other|max:255',
 
-            'vehicle_returned_to' => 'required|in:owner,other',
-            'vehicle_returned_to_other' => 'required_if:vehicle_returned_to,other|max:255',
+            'vehicle_collected_by' => 'required|in:owner,other',
+            'vehicle_collected_by_other' => 'required_if:vehicle_collected_by,other|max:255',
 
             'mechanic_name' => 'nullable|string|max:255',
             'status' => 'nullable|string|max:50',
@@ -78,9 +78,9 @@ class JobcardsController extends Controller
             ? $validated['vechicle_received_from_other']
             : $validated['vehicle_received_from'] = $vehicle->owner_name;
 
-        $validated['vehicle_returned_to'] =  ($validated['vehicle_returned_to'] == 'other')
-            ? $validated['vehicle_returned_to_other']
-            : $validated['vehicle_returned_to'] = $vehicle->owner_name;
+        $validated['vehicle_collected_by'] =  ($validated['vehicle_collected_by'] == 'other')
+            ? $validated['vehicle_collected_by']
+            : $validated['vehicle_collected_by'] = $vehicle->owner_name;
 
 
         if (empty($validated['mechanic_name'])) {
@@ -178,6 +178,38 @@ class JobcardsController extends Controller
         return response()->json(['message' => 'Jobcard updated successfully'], 200);
     }
 
+    public function markComplete(Request $request, $id)
+    {
+        $jobcard = Jobcards::findOrFail($id);
+        $validated = $request->validate([
+            'vehicle_returned_to' => 'required|string|max:255',
+            'vehicle_returned_to_other' => 'nullable|string|max:255',
+            'services' => 'nullable|array|min:1',
+            'services.*' => 'string|max:255',
+            'remarks' => 'nullable|string',
+            'vehicle_images' => 'nullable|array',
+            'vehicle_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'odometer_reading' => 'required|integer|min:0',
+        ]); 
+        $validated['vehicle_returned_to'] =  ($validated['vehicle_returned_to'] == 'other')
+            ? $validated['vehicle_returned_to_other']
+            : $validated['vehicle_returned_to'] = $jobcard->vehicle->owner_name;
+        $images = [];
+        if ($request->hasFile('vehicle_images')) {
+            foreach ($request->file('vehicle_images') as $image) {
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('jobcards', $imageName, 'public');
+                $images[] = $imageName;
+            }
+        }
+        if (!empty($images)) {
+            $validated['vehicle_images'] = json_encode($images);
+        }
+        $validated['status'] = 'completed';
+        $jobcard->update($validated);
+
+        return redirect()->route('jobcards.show', $id)->with('success', 'Jobcard marked as completed.');
+    }
     /**
      * Remove the specified resource from storage.
      */

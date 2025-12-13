@@ -102,6 +102,11 @@
                             View Bill
                         </a>
                     @endif
+                     @if ($bill) 
+                        <button class="btn btn-primary" onclick="openModal('complete_jobcard', {{ $job }})">
+                            Mark Completed
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>
@@ -114,6 +119,7 @@
     </script>
 
     @include('jobcards.edit')
+    @include('jobcards.mark_complete')
 
     @vite(['resources/js/api.js', 'resources/js/jobcards.js'])
 @endsection

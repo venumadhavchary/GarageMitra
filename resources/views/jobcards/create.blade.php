@@ -108,7 +108,7 @@
                             <div class="form-check">
                                 <input type="radio" class="form-check-input" name="vehicle_received_from"
                                     id="vehicle_received_from_owner" value="owner" checked>
-                                <label class="form-check-label" for="vehicle_received_from_owner">Owner
+                                <label class="form-check-label" for="vehicle_received_from_owner">Customer
                                     {{ $vehicle->owner_name }}</label>
                             </div>
                             <div class="form-check">
@@ -120,15 +120,14 @@
                         <div class="form-group mb-0" style="flex: 1; min-width: 200px;">
                             <label class="form-label required">Vehicle Collected By</label>
                             <div class="form-check">
-                                <input type="radio" class="form-check-input" name="vehicle_returned_to"
-                                    id="vehicle_returned_to_owner"  value="owner" checked>
-                                <label class="form-check-label" for="vehicle_returned_to_owner">Owner
-                                    {{ $vehicle->owner_name }}</label>
+                                <input type="radio" class="form-check-input" name="vehicle_collected_by"
+                                    id="vehicle_collected_by_owner"  value="owner" checked>
+                                <label class="form-check-label" for="vehicle_collected_by_owner">Owner - {{ $user->name }}</label>
                             </div>
                             <div class="form-check">
-                                <input type="radio" class="form-check-input" id="vehicle_returned_to_other"
-                                    name="vehicle_returned_to" value="other">
-                                <label class="form-check-label" for="vehicle_returned_to_other">Other</label>
+                                <input type="radio" class="form-check-input" id="vehicle_collected_by_other"
+                                    name="vehicle_collected_by" value="other">
+                                <label class="form-check-label" for="vehicle_collected_by_other">Submechanic</label>
                             </div>
                         </div>
                     </div>
@@ -139,9 +138,9 @@
                                 placeholder="Name who will receive the vehicle">
                         </div>
                         <div class="form-group mb-0" style="flex: 1; min-width: 200px; display:none;"
-                            id="vehicle_returned_to_input">
-                            <input type="text" class="form-control" name="vehicle_returned_to_other"
-                                placeholder="Name who will collect the vehicle">
+                            id="vehicle_collected_by_input">
+                            <input type="text" class="form-control" name="vehicle_collected_by_other"
+                                placeholder="Name of mechanic collected the vehicle">
                         </div>
                     </div>
                     <!-- Job Details -->

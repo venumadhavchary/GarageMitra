@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::get('jobcards/{vehicle_id}/create', [JobcardsController::class, 'create'])->name('jobcards.create');
     Route::put('jobcards/{id}/update', [JobcardsController::class, 'update'])->name('jobcards.update');
     Route::post('jobcards/{vehicle_id}', [JobcardsController::class, 'store'])->name('jobcards.store');
+    Route::post('jobcards/{id}/complete', [JobcardsController::class, 'markComplete'])->name('jobcards.complete');
     Route::get('vehicles/{id}', [VehiclesController::class, 'showJobs'])->name('vehicles.show');
     
     Route::get('bill/{jobcard_id}/generate', [BillController::class, 'generateBill'])->name('bills.generate');
