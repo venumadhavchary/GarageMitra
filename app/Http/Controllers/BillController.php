@@ -98,11 +98,11 @@ class BillController extends Controller
             return redirect()->route('bills.generate', $id);
         }
         $job = Jobcards::findOrFail($id);
-
+        $vehicle = $job->vehicle;
         $bill->spare_parts = json_decode($bill->spare_parts);
         $bill->labour_charges = json_decode($bill->labour_charges);
         $bill->services_to_do = json_decode($bill->services_to_do);
-        return view('bills.show', compact('bill', 'job'));
+        return view('bills.show', compact('bill', 'job', 'vehicle'));
     }
 
     /**

@@ -143,11 +143,13 @@ class JobcardsController extends Controller
 
         $bill = $job->bill;
         if($bill){
-            $bill->spare_parts = json_decode($bill->spare_parts);
-            $bill->labour_charges = json_decode($bill->labour_charges);
-            $bill->services_to_do = json_decode($bill->services_to_do);
+            $bill->spare_parts = json_decode($bill->spare_parts) ?? []; 
+            $bill->labour_charges = collect(json_decode($bill->labour_charges) ?? [])
+                                        ->merge(json_decode($bill->services_to_do) ?? []);
+
         }
-        return view('jobcards.show', compact('job', 'bill'));
+        $vehicle = $job->vehicle;
+        return view('jobcards.show', compact('job', 'bill', 'vehicle'));
     }
 
     /**

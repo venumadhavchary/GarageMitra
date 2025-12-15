@@ -110,6 +110,9 @@
                     </button>
                 </div>
                 <div class="card-body">
+                    @if($bill)
+                            @include('bills.invoice')
+                    @endif
                     @if ($job->status != 'completed')
                         @if (!$bill)
                             <a href="{{ route('bills.generate', $job->id) }}" class="btn btn-primary">
