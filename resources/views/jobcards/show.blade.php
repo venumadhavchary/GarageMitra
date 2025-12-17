@@ -138,6 +138,8 @@
         appRoutes = {
             updateJobcard: "{{ route('jobcards.update', $job->id) }}",
             completeJobcard: "{{ route('jobcards.complete', $job->id) }}",
+            updateDiscountUrl : "{{ route('bills.update_discount', $job->id) }}",
+            updatePaidAmountUrl: "{{ route('bills.update_paid_amount', $job->id) }}",
         }
     </script>
 

@@ -26,6 +26,7 @@ export async function handleRequest(event, form, url, isUpdate = false) {
         });
         const data = await response.json();
 
+        console.log("Response data:", data);
         if (!response.ok) {
             if (response.status === 422 && data.errors) {
                 // Laravel validation errors
@@ -43,16 +44,21 @@ export async function handleRequest(event, form, url, isUpdate = false) {
         }
         // Clear all field errors on success
         clearFieldErrors(form);
-        errorMessage.style.display = "none";
-        successMessage.style.display = "block";
-        successMessage.textContent = data.message || "Success.";
+        if(errorMessage){
+            errorMessage.style.display = "none";
+            successMessage.style.display = "block";
+        }
+        if(successMessage){
+            successMessage.textContent = data.message || "Success.";
+        }
         if (data.url) {
             window.location.href = data.url;
             return;
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
         }
-        setTimeout(() => {
-            window.location.reload();
-        }, 500);
+        return data;
     } catch (error) {
         console.error("Error during request:", error);
         for (const err of Object.values(error || {})) {

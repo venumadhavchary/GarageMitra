@@ -102,6 +102,8 @@ class BillController extends Controller
         $bill->spare_parts = json_decode($bill->spare_parts);
         $bill->labour_charges = json_decode($bill->labour_charges);
         $bill->services_to_do = json_decode($bill->services_to_do);
+        $bill->balance_amount = $this->calcBalanceAmount($bill->total_amount, $bill->paid_amount, $bill->discount);
+
         return view('bills.show', compact('bill', 'job', 'vehicle'));
     }
 
@@ -168,6 +170,38 @@ class BillController extends Controller
         return response()->json(['message' => 'Bill updated successfully', 'url' => route('jobcards.show', $bill->jobcard_id)], 200);
     }
 
+    public function updateDiscount(Request $request, $id){
+        $validated = $request->validate([
+            'discount' => 'nullable|numeric|min:0',
+        ]);
+        $bill = Bill::where('jobcard_id', $id)->first();
+        $bill->discount += $validated['discount'] ?? 0;
+        $bill->save();
+
+        $balance_amount = $this->calcBalanceAmount($bill->total_amount, $bill->paid_amount, $bill->discount);
+
+
+        return response()->json(['message' => 'Dicount applied successfully', 'balance_amount' => $balance_amount - $bill->discount, 'discount_amount' => $bill->discount ], 200);
+    }
+
+    public function updatePaidAmount(Request $request, $id){
+        $validated = $request->validate([
+            'paid_amount' => 'required|numeric|min:0',
+        ]);
+        $bill = Bill::where('jobcard_id', $id)->first();
+        $bill->paid_amount += $validated['paid_amount'];
+        if($bill->paid_amount + $bill->discount >= $bill->total_amount){
+            $bill->status = 'paid';
+        }
+        $bill->save();
+
+        $balance_amount = $this->calcBalanceAmount($bill->total_amount, $bill->paid_amount, $bill->discount);
+
+        return response()->json(['message' => 'Paid amount updated successfully', 'balance_amount' => $balance_amount, 'paid_amount' => $bill->paid_amount, 'status' => $bill->status ], 200);
+    }
+    public static function calcBalanceAmount($total_amount, $paid_amount = 0, $discount = 0){
+        return $total_amount - ($paid_amount + $discount);
+    }
     /**
      * Remove the specified resource from storage.
      */

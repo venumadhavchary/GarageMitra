@@ -261,11 +261,84 @@ if (vehicleReturnedOwner) {
         ).style.display = "none";
     });
 }
-s;
+
 
 // View Job
 function viewJob(id) {
     window.location.href = `/jobcards/${id}`;
 }
 
+
+
+
+const discountForm = document.getElementById('discount_form');
+const updateDiscount = document.getElementById('update_discount');
+if( updateDiscount && discountForm){
+    console.log("Discount form and button found");
+    updateDiscount.addEventListener('click', async function(event){
+        event.preventDefault();
+        updateDiscount.disabled = true;
+        updateDiscount.innerHTML = '⏳ Updating...';
+
+        try{
+            const res = await handleRequest(event, discountForm, appRoutes.updateDiscountUrl, true);
+            if(res && res.balance_amount){
+                const totalAmount = document.getElementById('total_amount');
+                totalAmount.textContent = parseFloat(res.balance_amount).toFixed(2);
+            }
+            if(res && res.discount_amount){
+                const totalDiscount = document.getElementById('total_discount');
+                totalDiscount.textContent = parseFloat(res.discount_amount).toFixed(2);
+            }
+        } finally {
+            updateDiscount.disabled = false;
+            updateDiscount.innerHTML = 'Apply';
+        }
+    });
+}
+
+const paidAmountForm = document.getElementById('paid_amount_form');
+const updatePaidAmount = document.getElementById('update_paid_amount');
+if( paidAmountForm && updatePaidAmount){
+    console.log("Paid amount form and button found");
+    updatePaidAmount.addEventListener('click', async function(event){
+        event.preventDefault();
+        updatePaidAmount.disabled = true;
+        updatePaidAmount.innerHTML = '⏳ Updating...';
+
+        try{
+            const res = await handleRequest(event, paidAmountForm, appRoutes.updatePaidAmountUrl, true);
+            console
+            if(res && res.balance_amount){
+                const totalAmount = document.getElementById('total_amount');
+                totalAmount.textContent = parseFloat(res.balance_amount).toFixed(2);
+            }
+            if(res && res.paid_amount){
+                const paidAmount = document.getElementById('total_paid_amount');
+                console.log("paid amount:", paidAmount);
+                console.log("Updating paid amount to:", res.paid_amount);
+                paidAmount.textContent = parseFloat(res.paid_amount).toFixed(2);
+            }
+            if(res && res.status === 'paid'){
+                console.log("Updating payment status badge to paid");
+                const statusBadge = document.getElementById('payment_status_badge');
+                statusBadge.style.display = 'block';
+                statusBadge.textContent = '✅ Payment Completed!';
+            }
+        } finally {
+            updatePaidAmount.disabled = false;
+            updatePaidAmount.innerHTML = 'Update';
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
 window.removeImage = removeImage;
+

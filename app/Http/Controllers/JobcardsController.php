@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Vehicles;
 use App\Models\Mechanics;
 use App\Models\Service;
+use App\Http\Controllers\BillController;
 
 class JobcardsController extends Controller
 {
@@ -146,7 +147,7 @@ class JobcardsController extends Controller
             $bill->spare_parts = json_decode($bill->spare_parts) ?? []; 
             $bill->labour_charges = collect(json_decode($bill->labour_charges) ?? [])
                                         ->merge(json_decode($bill->services_to_do) ?? []);
-
+            $bill->balance_amount = BillController::calcBalanceAmount($bill->total_amount, $bill->paid_amount, $bill->discount);
         }
         $vehicle = $job->vehicle;
         return view('jobcards.show', compact('job', 'bill', 'vehicle'));
