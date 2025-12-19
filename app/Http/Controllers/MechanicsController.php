@@ -38,7 +38,7 @@ class MechanicsController extends Controller
 
         $request->user()->mechanics()->create($validated);
 
-        return response()->json(['message' => 'Mechanic added successfully'], 201);
+        return response()->json(['message' => 'Mechanic added successfully' , 'url' => route('mechanics.index')], 201);
     }
 
     /**
@@ -69,7 +69,7 @@ class MechanicsController extends Controller
         ]);
 
         $mechanic->update($validated);
-        return response()->json(['message' => 'Mechanic updated successfully']);
+        return response()->json(['message' => 'Mechanic updated successfully', 'url' => route('mechanics.index')], 200);
     }
 
     /**

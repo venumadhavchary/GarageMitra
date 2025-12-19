@@ -5,7 +5,9 @@
     <div class="modal">
         <div class="modal-header">
             <h5 class="modal-title">Add Vehicle</h5>
-            <button class="modal-close" onclick="closeModal('add_vehicle')">×</button>
+            <button class="modal-close" onclick="closeModal('add_vehicle')">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         <div class="modal-body">
             <form id="add_vehicle_form">

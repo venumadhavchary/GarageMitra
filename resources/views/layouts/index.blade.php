@@ -29,16 +29,14 @@
     
     <ul class="navbar-nav" id="navbarNav">
         <li class="nav-item">
-            <a href="{{ route('jobcards.index') }}" class="nav-link active">JobCards</a>
+            <a href="{{ route('jobcards.index') }}" class="nav-link @if(Request::is('jobcards*')) active @endif
+            ">JobCards</a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('vehicles.index') }}" class="nav-link">Vehicles</a>
+            <a href="{{ route('vehicles.index') }}" class="nav-link @if(Request::is('vehicles*')) active @endif ">Vehicles</a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('mechanics.index') }}" class="nav-link">Mechanics</a>
-        </li>
-        <li class="nav-item">
-            <a href="#forms" class="nav-link">Forms</a>
+            <a href="{{ route('mechanics.index') }}" class="nav-link @if(Request::is('mechanics*')) active @endif">Mechanics</a>
         </li>
     </ul>
     
