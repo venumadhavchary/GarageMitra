@@ -4,15 +4,15 @@
 
 /* -------------------- CSS Variables -------------------- */
 :root {
-    /* Primary Colors */
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
+    /* Primary Colors */ 
+    --primary: #333;
+    --primary-hover: #1a1a1a;
     --primary-light: #dbeafe;
     
     /* Secondary Colors */
     --secondary: #64748b;
     --secondary-hover: #475569;
-    --secondary-light: #f1f5f9;
+    --secondary-light: #e2e8f0;
     
     /* Status Colors */
     --success: #16a34a;
