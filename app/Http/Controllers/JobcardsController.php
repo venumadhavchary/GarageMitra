@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jobcards;
+use App\Models\Jobcard as Jobcards;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Vehicles;
-use App\Models\Mechanics;
+use App\Models\Vehicle as Vehicles;
+use App\Models\Mechanic as Mechanics;
 use App\Models\Service;
 use App\Http\Controllers\BillController;
 

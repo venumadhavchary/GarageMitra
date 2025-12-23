@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Jobcards;
-class Vehicles extends Model
+class Vehicle extends Model
 {
     //
     protected $fillable = [
@@ -28,6 +28,6 @@ class Vehicles extends Model
     }
     public function jobcards()
     {
-        return $this->hasMany(Jobcards::class, 'vehicle_number', 'vehicle_number');
+        return $this->hasMany(Jobcard::class, 'vehicle_number', 'vehicle_number');
     }
 }

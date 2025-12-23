@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Vehicles;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,13 +55,13 @@ class VehiclesController extends Controller
      */
     public function show($id)
     {
-        $vehicle = Vehicles::findOrFail($id);
+        $vehicle = Vehicle::findOrFail($id);
         return view('vehicles.show', compact('vehicle'));
     }
 
      public function showJobs($id)
     {
-        $vehicle = Vehicles::findOrFail($id);
+        $vehicle = Vehicle::findOrFail($id);
         $jobcards = $vehicle->jobcards()->get();
         // dd($jobcards);
         return view('vehicles.show', compact('jobcards', 'vehicle'));
@@ -70,7 +70,7 @@ class VehiclesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Vehicles $vehicles)
+    public function edit(Vehicle $vehicles)
     {
         //
     }
@@ -78,7 +78,7 @@ class VehiclesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Vehicles $vehicle)
+    public function update(Request $request, Vehicle $vehicle)
     {
         $validated = $request->validate([
             'vehicle_number' => 'required|string|unique:vehicles,vehicle_number,' . $vehicle->id . '|max:255',
@@ -108,7 +108,7 @@ class VehiclesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Vehicles $vehicles)
+    public function destroy(Vehicle $vehicles)
     {
         //
     }

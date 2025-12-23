@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mechanics;
+use App\Models\Mechanic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,7 +44,7 @@ class MechanicsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Mechanics $mechanics)
+    public function show(Mechanic $mechanics)
     {
         //
     }
@@ -52,7 +52,7 @@ class MechanicsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Mechanics $mechanics)
+    public function edit(Mechanic $mechanics)
     {
         //
     }
@@ -60,7 +60,7 @@ class MechanicsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mechanics $mechanic)
+    public function update(Request $request, Mechanic $mechanic)
     { 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -75,7 +75,7 @@ class MechanicsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Mechanics $mechanics)
+    public function destroy(Mechanic $mechanics)
     {
         //
     }

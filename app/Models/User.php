@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'number',
+        'password',
         'shop_name',
         'state',
         'shop_address',
@@ -49,14 +50,14 @@ class User extends Authenticatable
     }
     public function mechanics()
     {
-        return $this->hasMany(Mechanics::class, 'user_id');
+        return $this->hasMany(Mechanic::class, 'user_id');
     }
     public function vehicles()
     {
-        return $this->hasMany(Vehicles::class, 'user_id');
+        return $this->hasMany(Vehicle::class, 'user_id');
     }
     public function jobcards()
     {
-        return $this->hasMany(Jobcards::class, 'user_id');
+        return $this->hasMany(Jobcard::class, 'user_id');
     }
 }

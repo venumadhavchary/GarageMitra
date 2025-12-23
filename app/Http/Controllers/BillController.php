@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bill;
 use Illuminate\Http\Request;
-use App\Models\Jobcards;
+use App\Models\Jobcard as Jobcards;
 use App\Models\Service;
 use App\Models\User;
 
@@ -83,7 +83,11 @@ class BillController extends Controller
         }
         $validated['vehicle_images'] = json_encode($images);
         
-        $jobcard->bill()->create($validated);
+        $bill = $jobcard->bill()->create($validated);
+        // Update bill_id in jobcard
+        $jobcard->bill_id = $bill->id;
+        $jobcard->save();
+
 
         return response()->json(['message' => 'Bill generated successfully', 'url' => route('jobcards.show', $jobcard->id)], 201);
     }

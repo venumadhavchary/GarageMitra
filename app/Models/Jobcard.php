@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\User;
 use App\Models\Mechanics;
 
-class Jobcards extends Model
+class Jobcard extends Model
 {
     use HasFactory;
     protected $fillable = [ 
@@ -31,6 +31,7 @@ class Jobcards extends Model
         'vehicle_condition',
         'vehicle_images',
         'status',
+        'bill_id',
     ];
 
     public function user()
@@ -39,7 +40,7 @@ class Jobcards extends Model
     }
     public function vehicle()
     {
-        return $this->belongsTo(Vehicles::class, 'vehicle_number', 'vehicle_number');
+        return $this->belongsTo(Vehicle::class, 'vehicle_number', 'vehicle_number');
     }
     public function bill(){
         return $this->hasOne(Bill::class, 'jobcard_id', 'id');
