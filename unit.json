@@ -4,10 +4,11 @@
             "pass": "routes",
             "forwarded": {
                 "protocol": "X-Forwarded-Proto",
-                "source": ["0.0.0.0/0"]
+                "source": ["<Load balancer IP, Subnet etc.>"]
             }
         }
     },
+
     "routes": [
         {
             "match": {
@@ -21,6 +22,7 @@
             }
         }
     ],
+
     "applications": {
         "laravel": {
             "type": "php",
