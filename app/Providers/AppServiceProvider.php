@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        config(['trustedproxies' => ['10.0.1.0/24']]);
+        // Force HTTPS in production only
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }

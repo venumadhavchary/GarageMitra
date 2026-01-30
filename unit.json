@@ -4,7 +4,7 @@
             "pass": "routes",
             "forwarded": {
                 "protocol": "X-Forwarded-Proto",
-                "source": ["<Load balancer IP, Subnet etc.>"]
+                "source": ["10.0.1.0/24"]
             }
         }
     },

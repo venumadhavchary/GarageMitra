@@ -1,3 +1,13 @@
+# Frontend build stage
+FROM node:20-alpine AS frontend
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci 
+COPY . .
+RUN npm run build
+RUN chown -R unit:unit /app/public/build
+
+# App stage (your original, with fixes)
 FROM unit:1.34.1-php8.3
 
 RUN apt update && apt install -y \
@@ -10,7 +20,7 @@ RUN apt update && apt install -y \
 RUN echo "opcache.enable=1" > /usr/local/etc/php/conf.d/custom.ini \
     && echo "opcache.jit=tracing" >> /usr/local/etc/php/conf.d/custom.ini \
     && echo "opcache.jit_buffer_size=256M" >> /usr/local/etc/php/conf.d/custom.ini \
-    && echo "memory_limit=512M" > /usr/local/etc/php/conf.d/custom.ini \        
+    && echo "memory_limit=512M" >> /usr/local/etc/php/conf.d/custom.ini \
     && echo "upload_max_filesize=64M" >> /usr/local/etc/php/conf.d/custom.ini \
     && echo "post_max_size=64M" >> /usr/local/etc/php/conf.d/custom.ini
 
@@ -20,13 +30,14 @@ WORKDIR /var/www/html
 
 RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache
 
-RUN chown -R unit:unit /var/www/html/storage bootstrap/cache && chmod -R 775 /var/www/html/storage
-
 COPY . .
 
-RUN chown -R unit:unit storage bootstrap/cache && chmod -R 775 storage bootstrap/cache
+# Copy built frontend assets from Node stage
+COPY --from=frontend /app/public/build /var/www/html/public/build
 
-RUN composer install --prefer-dist --optimize-autoloader --no-interaction
+RUN composer install --prefer-dist --optimize-autoloader --no-interaction \
+    && chown -R unit:unit /var/www/html \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 COPY unit.json /docker-entrypoint.d/unit.json
 
