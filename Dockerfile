@@ -31,7 +31,7 @@ COPY . .
 ########################################
 # 3. Runtime (PHP + Nginx)
 ########################################
-FROM php:8.3-fpm-alpine
+FROM php:8.2-fpm-alpine
 
 # System deps
 RUN apk add --no-cache \
