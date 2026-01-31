@@ -7,6 +7,10 @@ use App\Http\Controllers\VehiclesController;
 use App\Http\Controllers\BillController;
 use Illuminate\Support\Facades\Route;
 
+// Health check for Coolify
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok'], 200);
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'index'])->name('login');
