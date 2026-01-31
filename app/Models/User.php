@@ -26,6 +26,7 @@ class User extends Authenticatable
         'state',
         'shop_address',
         'gstin',
+        'role',
     ];
 
     /**
@@ -48,6 +49,12 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
         ];
     }
+    
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+    
     public function mechanics()
     {
         return $this->hasMany(Mechanic::class, 'user_id');

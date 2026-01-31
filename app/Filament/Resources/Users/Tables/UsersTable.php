@@ -31,6 +31,12 @@ class UsersTable
                     ->searchable(),
                 TextColumn::make('gst_number')
                     ->searchable(),
+                TextColumn::make('role')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'admin' => 'danger',
+                        'user' => 'gray',
+                    }),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
