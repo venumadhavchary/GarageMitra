@@ -6,8 +6,14 @@ export default defineConfig({
         laravel({
             input: [
                 "resources/css/app.css",
+                "resources/css/style.css",
                 "resources/js/app.js",
                 "resources/js/auth.js",
+                "resources/js/api.js",
+                "resources/js/bill.js",
+                "resources/js/jobcards.js",
+                "resources/js/mechanics.js",
+                "resources/js/vehicles.js",
             ],
             refresh: true,
         }),
